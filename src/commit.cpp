@@ -6,9 +6,9 @@
 #include <filesystem>
 #include <chrono>
 
-/// <summary>
-/// HEAD에 저장된 커밋 해시를 가져오는 함수
-/// </summary>
+/**
+* @brief HEAD에 저장된 커밋 해시를 가져오는 함수
+*/
 std::string getCurrentHeadHash()
 {
 	std::ifstream head(".minigit\\HEAD");
@@ -19,20 +19,21 @@ std::string getCurrentHeadHash()
 	return hash;
 }
 
-/// <summary>
-/// 커밋 디렉토리 생성
-/// </summary>
+/**
+* @brief 커밋 디렉토리 생성
+* @param hash 커밋 해시코드
+*/
 bool createCommitDirectory(const std::string& hash)
 {
 	std::string path = ".minigit\\commits\\" + hash;
 	return std::filesystem::create_directory(path);
 }
 
-/// <summary>
-/// 파일 복사
-/// </summary>
-/// <param name="src">원본 파일</param>
-/// <param name="destDir">복사된 파일을 놓을 폴더 위치</param>
+/**
+* @brief 커밋 디렉토리로 파일 복사
+* @param src 원본파일
+* @param destDir 복사 파일을 저장할 커밋 디렉토리
+*/
 bool copyFileToCommit(const std::string& src, const std::string& destDir)
 {
 	std::ifstream in(src, std::ios::binary);
@@ -43,11 +44,11 @@ bool copyFileToCommit(const std::string& src, const std::string& destDir)
 	return true;
 }
 
-/// <summary>
-/// 커밋 메시지와 시간을 기록하는 함수
-/// </summary>
-/// <param name="destDir">저장되는 폴더 위치</param>
-/// <param name="message">커밋 메세지</param>
+/**
+* @brief 커밋 메시지와 시간을 기록하는 함수
+* @param destDir 커밋 디렉토리
+* @param message 커밋된 메세지
+*/
 void writeMeta(const std::string& destDir, const std::string& message)
 {
 	std::ofstream meta(destDir + "\\meta.txt");
@@ -88,12 +89,14 @@ void commit(const std::string& message)
 		return;
 	}
 
+	std::vector<std::string> entries;
 	std::stringstream snapshot;
 	std::string line;
 
 	// 해시 생성용 문자열 누적
 	while (std::getline(index, line))
 	{
+		entries.push_back(line);
 		snapshot << line << "\n";
 	}
 	std::string commitHash = simpleHash(snapshot.str());
@@ -119,19 +122,27 @@ void commit(const std::string& message)
 		return;
 	}
 
-	// index 파일을 다시 읽어 파일 복사
-	index.clear();
-	index.seekg(0);
-
-	while (std::getline(index, line))
 	{
-		std::string filename = line.substr(0, line.find(":")); // 파일명 추출
+		std::ofstream destIndex(commitPath + "\\index", std::ios::trunc);
+		if (!destIndex.is_open())
+		{
+			std::cerr << "커밋용 index 복사 실패\n";
+			return;
+		}
+		destIndex << snapshot.str();
+		destIndex.close();
+	}
+
+	for (auto& e : entries)
+	{
+		auto delim = e.find(":");
+		std::string filename = (delim == std::string::npos ? e : e.substr(0, delim));
 		if (!copyFileToCommit(filename, commitPath))
 		{
 			std::cerr << "파일 복사 실패: " << filename << "\n";
+			return;
 		}
 	}
-
 	// 메세지 기록
 	writeMeta(commitPath, message);
 
