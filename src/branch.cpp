@@ -20,7 +20,7 @@ std::string getCurrentBranchName()
 	std::getline(head, ref);
 	head.close();
 
-	const std::string prefix = "refs\\heads\\";
+	const std::string prefix = "refs/heads/";
 	if (ref.rfind(prefix, 0) == 0)
 	{
 		return ref.substr(prefix.length());;
