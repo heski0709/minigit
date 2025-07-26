@@ -13,10 +13,16 @@ bool createDirectory(const std::string& path)
 void init()
 {
 	// .minigit 디렉토리 생성
-	if (!createDirectory(".minigit")) return;
+	if (!createDirectory(".minigit"))
+	{
+		std::cerr << "이미 초기화된 저장소입니다.\n";
+		return;
+	}
 
-	// .minigit/commits 디렉토리 생성
-	if (!createDirectory(".minigit\\commits")) return;
+	// .minigit 하위 디렉토리 생성
+	createDirectory(".minigit\\commits");
+	createDirectory(".minigit\\refs");
+	createDirectory(".minigit\\refs\heads");
 
 	// index 파일 생성 (스테이징 영역 기록)
 	std::ofstream index(".minigit\\index");
@@ -27,7 +33,15 @@ void init()
 	}
 	index.close();
 
-	// HEAD 파일 생성 (현재 커밋을 가리킴)
+	// main 브랜치 생성
+	std::ofstream mainBranch(".minigit\\refs\\heads\\main");
+	if (!mainBranch.is_open())
+	{
+		std::cerr << "main 브랜치 생성 실패\n";
+		return;
+	}
+
+	// HEAD 파일 생성 (main 브랜치를 가리킴)
 	std::ofstream head(".minigit\\HEAD");
 	if (!head.is_open())
 	{
@@ -35,6 +49,7 @@ void init()
 		return;
 	}
 
+	head << "refs/heads/main";
 	head.close();
 
 	std::cout << "MiniGit 초기화 완료\n";
