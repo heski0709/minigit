@@ -22,7 +22,7 @@ void init()
 	// .minigit 하위 디렉토리 생성
 	createDirectory(".minigit\\commits");
 	createDirectory(".minigit\\refs");
-	createDirectory(".minigit\\refs\heads");
+	createDirectory(".minigit\\refs\\heads");
 
 	// index 파일 생성 (스테이징 영역 기록)
 	std::ofstream index(".minigit\\index");
