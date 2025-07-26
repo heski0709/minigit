@@ -4,6 +4,7 @@
 #include "add.h"
 #include "commit.h"
 #include "log.h"
+#include "checkout.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,10 +13,11 @@ int main(int argc, char* argv[])
 	{
 		std::cout << R"(
 사용법
-minigit init: minigit를 초기화합니다.
-minigit add [파일명]: 파일을 스테이징합니다.
-minigit commit [메세지]: 커밋 메세지 작성
-minigit log: 커밋 기록을 출력합니다.
+init: minigit를 초기화합니다.
+add [파일명]: 파일을 스테이징합니다.
+commit [메세지]: 커밋 메세지 작성
+log: 커밋 기록을 출력합니다.
+checkout <commit_hash>: 해당 커밋기준으로 파일을 복원합니다.
 )";
 		return 0;
 	}
@@ -62,6 +64,13 @@ minigit log: 커밋 기록을 출력합니다.
 		{
 			showLog(false);
 		}
+	}
+	else if (command == "checkout")
+	{
+		if (argc < 3)
+			std::cerr << "사용법: minigit checkout <commit_hash>\n";
+		else
+			checkoutCommit(argv[2]);
 	}
 	else
 	{
