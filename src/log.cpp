@@ -1,4 +1,5 @@
 #include "log.h"
+#include "branch_utils.h"
 #include <filesystem>
 #include <iostream>
 #include <fstream>
@@ -18,16 +19,7 @@ struct CommitInfo
 
 void showLog(bool onelineMode)
 {
-	std::ifstream headFile(".minigit\\HEAD");
-	if (!headFile.is_open())
-	{
-		std::cerr << "HEAD가 존재하지 않습니다.\n";
-		return;
-	}
-
-	std::string currentHash;
-	std::getline(headFile, currentHash);
-	headFile.close();
+	std::string currentHash = getCurrentBranchHash();
 
 	if (currentHash.empty())
 	{

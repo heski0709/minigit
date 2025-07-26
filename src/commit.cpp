@@ -1,4 +1,5 @@
 #include "commit.h"
+#include "branch_utils.h"
 #include "utils.h"
 #include <iostream>
 #include <fstream>
@@ -7,19 +8,6 @@
 #include <chrono>
 
 namespace fs = std::filesystem;
-
-/**
-* @brief HEAD에 저장된 커밋 해시를 가져오는 함수
-*/
-std::string getCurrentHeadHash()
-{
-	std::ifstream head(".minigit\\HEAD");
-	if (!head.is_open()) return "";
-
-	std::string hash;
-	std::getline(head, hash);
-	return hash;
-}
 
 /**
 * @brief 커밋 디렉토리 생성
@@ -59,7 +47,7 @@ void writeMeta(const std::string& destDir, const std::string& message)
 	std::ofstream meta(destDir + "\\meta.txt");
 	if (!meta.is_open()) return;
 
-	std::string parentHash = getCurrentHeadHash();
+	std::string parentHash = getCurrentBranchHash();
 	auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 	char timeStr[100];
 
@@ -107,9 +95,9 @@ void commit(const std::string& message)
 	std::string commitHash = simpleHash(snapshot.str());
 	std::string commitPath = ".minigit\\commits\\" + commitHash;
 
-	// 현재 HEAD 해시와 commit 해시 비교
-	std::string currentHeadHash = getCurrentHeadHash();
-	if (currentHeadHash == commitHash)
+	// 현재 브랜치의 HEAD 해시와 commit 해시 비교
+	std::string currentBranchHash = getCurrentBranchHash();
+	if (currentBranchHash == commitHash)
 	{
 		std::cout << "이전 커밋과 동일한 상태입니다. 커밋을 취소합니다.\n";
 
@@ -151,14 +139,10 @@ void commit(const std::string& message)
 	// 메세지 기록
 	writeMeta(commitPath, message);
 
-	// HEAD 업데이트
-	std::ofstream head(".minigit\\HEAD");
-	if (head.is_open())
-	{
-		head << commitHash;
-		head.close();
-	}
 
+	// 브랜치 HEAD 업데이트
+	updateBranchHead(commitHash);
+	
 	// index 초기화
 	std::ofstream clearIndex(".minigit\\index", std::ios::trunc); // truncate
 	if (!clearIndex.is_open())

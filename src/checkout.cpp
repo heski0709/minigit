@@ -1,5 +1,5 @@
 #include "checkout.h"
-#include "branch.h"
+#include "branch_utils.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -58,15 +58,7 @@ void checkoutCommit(const std::string& hash)
 			std::cout << filename << " 복원 실패\n";
 	}
 
-	// HEAD 포인터 이동
-	std::string currentBranchName = getCurrentBranchName();
-	std::ofstream head(".minigit\\refs\\heads\\" + currentBranchName);
-	if (!head.is_open())
-	{
-		std::cerr << "HEAD 업데이트 실패\n";
-		return;
-	}
-	head << hash;
+	updateBranchHead(hash);
 
 	std::cout << "checkout 완료. HEAD → " << hash << "\n";
 }
