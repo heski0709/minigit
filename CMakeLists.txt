@@ -7,4 +7,4 @@ include_directories(include)
 
 file(GLOB SOURCES "src/*.cpp")
 
-add_executable(minigit ${SOURCES})2
+add_executable(minigit ${SOURCES})
