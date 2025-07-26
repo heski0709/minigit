@@ -36,7 +36,7 @@ void showLog(bool onelineMode)
 	}
 
 	std::cout << "커밋 내역 (최신 순):\n\n";
-	std::cout << "HEAD → " << currentHash << "\n";
+	std::string headHash = currentHash;
 
 	while (!currentHash.empty())
 	{
@@ -66,9 +66,22 @@ void showLog(bool onelineMode)
 			}
 		}
 
-		std::cout << "commit " << currentHash << "\n";
-		std::cout << "message: " << message << "\n";
-		std::cout << "timestamp: " << timestamp << "\n\n";
+		if (!onelineMode)
+		{
+			if (currentHash == headHash)
+				std::cout << "HEAD → " << currentHash << "\n";
+			std::cout << "commit " << currentHash << "\n";
+			std::cout << "message: " << message << "\n";
+			std::cout << "timestamp: " << timestamp << "\n\n";
+		}
+		else
+		{
+			std::string shortHash = currentHash.substr(0, 4);
+			if (currentHash == headHash)
+				std::cout << "HEAD → " << shortHash << " " << message << "\n";
+			else
+				std::cout << shortHash << " " << message << "\n";
+		}
 
 		currentHash = parent;
 	}
