@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <chrono>
 
+namespace fs = std::filesystem;
+
 /**
 * @brief HEAD에 저장된 커밋 해시를 가져오는 함수
 */
@@ -26,7 +28,7 @@ std::string getCurrentHeadHash()
 bool createCommitDirectory(const std::string& hash)
 {
 	std::string path = ".minigit\\commits\\" + hash;
-	return std::filesystem::create_directory(path);
+	return fs::create_directory(path);
 }
 
 /**
@@ -36,6 +38,9 @@ bool createCommitDirectory(const std::string& hash)
 */
 bool copyFileToCommit(const std::string& src, const std::string& destDir)
 {
+	fs::path destPath = fs::path(destDir) / src;
+	fs::create_directories(destPath.parent_path());
+
 	std::ifstream in(src, std::ios::binary);
 	std::ofstream out(destDir + "\\" + src, std::ios::binary);
 	if (!in.is_open() || !out.is_open()) return false;
