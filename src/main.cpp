@@ -12,8 +12,7 @@ int main(int argc, char* argv[])
 	// 명령어 파싱
 	if (argc < 2)
 	{
-		std::cout << R"(
-사용법
+		std::cout << R"(사용법
 init: minigit를 초기화합니다.
 add [파일명]: 파일을 스테이징합니다.
 commit [메세지]: 커밋 메세지 작성
@@ -70,8 +69,16 @@ checkout <commit_hash>: 해당 커밋기준으로 파일을 복원합니다.
 	{
 		if (argc < 3)
 			std::cerr << "사용법: minigit checkout <commit_hash>\n";
-		else
-			checkoutCommit(argv[2]);
+		std::string target = argv[2];
+
+		if (target.size() == 40 && target.find_first_not_of("0123456789abcdef") == std::string::npos) 
+		{
+			checkoutCommit(target);
+		}
+		else 
+		{
+			checkoutBranch(target);
+		}
 	}
 	else if (command == "branch")
 	{

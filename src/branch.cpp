@@ -89,7 +89,7 @@ void createBranch(const std::string& newBranchName)
 
 	// 이미 존재하는 브랜치일 경우 리턴
 	std::string newBranchPath = ".minigit\\refs\\heads\\" + newBranchName;
-	if (fs::exists(newBranchName))
+	if (fs::exists(newBranchPath))
 	{
 		std::cerr << "이미 존재하는 브랜치입니다.\n";
 		return;

@@ -1,4 +1,5 @@
 #include "checkout.h"
+#include "branch.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -58,7 +59,8 @@ void checkoutCommit(const std::string& hash)
 	}
 
 	// HEAD 포인터 이동
-	std::ofstream head(".minigit\\HEAD");
+	std::string currentBranchName = getCurrentBranchName();
+	std::ofstream head(".minigit\\refs\\heads\\" + currentBranchName);
 	if (!head.is_open())
 	{
 		std::cerr << "HEAD 업데이트 실패\n";
@@ -67,4 +69,50 @@ void checkoutCommit(const std::string& hash)
 	head << hash;
 
 	std::cout << "checkout 완료. HEAD → " << hash << "\n";
+}
+
+/**
+* @brief 브랜치 이름을 기준으로 해당 브랜치로 이동
+* 
+* @param branchName 이동할 브랜치 이름
+*/
+void checkoutBranch(const std::string& branchName)
+{
+	std::string branchPath = ".minigit\\refs\\heads\\" + branchName;
+
+	// 브랜치 존재 확인
+	if (!fs::exists(branchPath))
+	{
+		std::cerr << "해당하는 브랜치가 존재하지 않습니다.\n";
+		return;
+	}
+
+	// 해당 브랜치 HEAD의 커밋 해시 읽기
+	std::ifstream branchHEAD(branchPath);
+	if (!branchHEAD.is_open())
+	{
+		std::cerr << "브랜치 정보를 읽을 수 없습니다.\n";
+		return;
+	}
+
+	std::string commitHash;
+	std::getline(branchHEAD, commitHash);
+	branchHEAD.close();
+
+	// 해당 커밋 기준으로 checkout
+	if (!commitHash.empty())
+	{
+		checkoutCommit(commitHash);
+	}
+
+	// HEAD 포인터를 해당 브랜치로 설정
+	std::ofstream head(".minigit\\HEAD");
+	if (!head.is_open())
+	{
+		std::cerr << "HEAD 업데이트 실패\n";
+		return;
+	}
+
+	head << "refs/heads/" << branchName;
+	std::cout << "브랜치 '" << branchName << "' 로 이동완료\n";
 }
