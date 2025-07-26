@@ -5,6 +5,7 @@
 #include "commit.h"
 #include "log.h"
 #include "checkout.h"
+#include "branch.h"
 
 int main(int argc, char* argv[])
 {
@@ -71,6 +72,10 @@ checkout <commit_hash>: 해당 커밋기준으로 파일을 복원합니다.
 			std::cerr << "사용법: minigit checkout <commit_hash>\n";
 		else
 			checkoutCommit(argv[2]);
+	}
+	else if (command == "branch")
+	{
+		handleBranchCommand(argc, argv);
 	}
 	else
 	{
