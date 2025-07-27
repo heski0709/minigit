@@ -91,12 +91,6 @@ void checkoutBranch(const std::string& branchName)
 	std::getline(branchHEAD, commitHash);
 	branchHEAD.close();
 
-	// 해당 커밋 기준으로 checkout
-	if (!commitHash.empty())
-	{
-		checkoutCommit(commitHash);
-	}
-
 	// HEAD 포인터를 해당 브랜치로 설정
 	std::ofstream head(".minigit\\HEAD");
 	if (!head.is_open())
@@ -104,7 +98,13 @@ void checkoutBranch(const std::string& branchName)
 		std::cerr << "HEAD 업데이트 실패\n";
 		return;
 	}
-
 	head << "refs/heads/" << branchName;
+
+	// 해당 커밋 기준으로 checkout
+	if (!commitHash.empty())
+	{
+		checkoutCommit(commitHash);
+	}
+
 	std::cout << "브랜치 '" << branchName << "' 로 이동완료\n";
 }
