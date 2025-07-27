@@ -48,3 +48,17 @@ std::string readFileContent(const std::string& filename)
 	file.close();
 	return content;
 }
+
+
+std::vector<std::string> splitLines(const std::string& content)
+{
+	std::vector<std::string> lines;
+	std::stringstream ss(content);
+	std::string line;
+	while (std::getline(ss, line))
+	{
+		if (!line.empty())
+			lines.push_back(line);
+	}
+	return lines;
+}

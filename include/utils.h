@@ -19,3 +19,8 @@ std::string readFileContent(const std::string& filename);
 */
 std::string improvedHash(const std::vector<std::string>& entries);
 std::string simpleHash(const std::string& content);
+
+/**
+* @brief 문자열을 줄 단위로 분리
+*/
+std::vector<std::string> splitLines(const std::string& content);
