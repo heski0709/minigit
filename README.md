@@ -9,4 +9,4 @@ CHATGPT를 활용해 자체 형상관리툴 만들기 프로젝트
 git clone https://github.com/heski0709/minigit.git
 ```
 3. 프로젝트 폴더에서 build 폴더 생성
-4. build 폴더에서 ```cmake ...``` 실행
+4. build 폴더에서 ```cmake ..``` 실행
