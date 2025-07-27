@@ -26,16 +26,24 @@ std::string getCurrentBranchName()
 
 
 /**
-* @brief 브랜치 HEAD에 저장된 커밋 해시를 가져오는 함수
+* @brief 현재 브랜치의 HEAD에 저장된 커밋 해시를 가져오는 함수
 */
 std::string getCurrentBranchHash()
 {
 	std::string currentBranchName = getCurrentBranchName();
-	std::ifstream head(".minigit\\refs\\heads\\" + currentBranchName);
-	if (!head.is_open()) return "";
+	return getBranchHash(currentBranchName);
+}
+
+/**
+* @brief 특정 브랜치의 HEAD에 저장된 커밋 해시를 가져오는 함수
+*/
+std::string getBranchHash(const std::string& branchName)
+{
+	std::ifstream in(".minigit\\refs\\heads\\" + branchName);
+	if (!in.is_open()) return "";
 
 	std::string hash;
-	std::getline(head, hash);
+	std::getline(in, hash);
 	return hash;
 }
 
