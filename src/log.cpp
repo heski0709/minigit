@@ -17,9 +17,14 @@ struct CommitInfo
 	fs::file_time_type time; // 정렬용
 };
 
+/**
+* @brief 로그를 출력하는 함수
+* @param onelineMode true면 한 줄 로그
+*/
 void showLog(bool onelineMode)
 {
 	std::string currentHash = getCurrentBranchHash();
+	std::string currentBranch = getCurrentBranchName();
 
 	if (currentHash.empty())
 	{
@@ -60,19 +65,21 @@ void showLog(bool onelineMode)
 
 		if (!onelineMode)
 		{
+			std::cout << "commit " << currentHash;
 			if (currentHash == headHash)
-				std::cout << "HEAD → " << currentHash << "\n";
-			std::cout << "commit " << currentHash << "\n";
+				std::cout << " (HEAD → " << currentBranch << ")";
+			std::cout << "\n";
 			std::cout << "message: " << message << "\n";
 			std::cout << "timestamp: " << timestamp << "\n\n";
 		}
 		else
 		{
 			std::string shortHash = currentHash.substr(0, 4);
+			std::cout << shortHash;
 			if (currentHash == headHash)
-				std::cout << "HEAD → " << shortHash << " " << message << "\n";
+				std::cout << " (HEAD → " << currentBranch << ") " << message << "\n";
 			else
-				std::cout << shortHash << " " << message << "\n";
+				std::cout << " " << message << "\n";
 		}
 
 		currentHash = parent;
