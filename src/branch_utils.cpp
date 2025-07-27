@@ -18,7 +18,7 @@ std::string getCurrentBranchName()
 	const std::string prefix = "refs/heads/";
 	if (ref.rfind(prefix, 0) == 0)
 	{
-		return ref.substr(prefix.length());;
+		return ref.substr(prefix.length());
 	}
 
 	return "";
@@ -39,7 +39,7 @@ std::string getCurrentBranchHash()
 	return hash;
 }
 
-void updateBranchHead(std::string hash)
+void updateBranchHead(const std::string hash)
 {
 	std::string currentBranchName = getCurrentBranchName();
 	std::ofstream head(".minigit\\refs\\heads\\" + currentBranchName);

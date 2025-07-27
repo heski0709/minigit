@@ -3,4 +3,4 @@
 
 std::string getCurrentBranchName();
 std::string getCurrentBranchHash();
-void updateBranchHead(std::string hash);
+void updateBranchHead(const std::string hash);

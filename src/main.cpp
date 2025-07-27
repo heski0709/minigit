@@ -6,6 +6,7 @@
 #include "log.h"
 #include "checkout.h"
 #include "branch.h"
+#include "status.h"
 
 int main(int argc, char* argv[])
 {
@@ -14,10 +15,12 @@ int main(int argc, char* argv[])
 	{
 		std::cout << R"(사용법
 init: minigit를 초기화합니다.
-add [파일명]: 파일을 스테이징합니다.
-commit [메세지]: 커밋 메세지 작성
-log: 커밋 기록을 출력합니다.
-checkout <commit_hash>: 해당 커밋기준으로 파일을 복원합니다.
+add <filename>: 파일을 스테이징합니다.
+commit <message>: 커밋 메세지 작성
+log [--online]: 커밋 기록을 출력합니다.
+checkout <branch_name | commit_hash>: 해당 브랜치 또는 커밋 기준으로 파일을 복원합니다.
+branch [name]: 브랜치 리스트 출력, 브랜치 생성
+status: 현재 브랜치의 상태를 출력합니다.
 )";
 		return 0;
 	}
@@ -83,6 +86,10 @@ checkout <commit_hash>: 해당 커밋기준으로 파일을 복원합니다.
 	else if (command == "branch")
 	{
 		handleBranchCommand(argc, argv);
+	}
+	else if (command == "status")
+	{
+		showStatus();
 	}
 	else
 	{
