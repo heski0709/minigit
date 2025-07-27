@@ -1,7 +1,24 @@
 #include <fstream>
 #include <filesystem>
-#include <string>
+#include <sstream>
 #include "utils.h"
+
+std::string improvedHash(const std::vector<std::string>& entries)
+{
+	std::size_t combined = 0;
+
+	for (const auto& entry : entries)
+	{
+		std::hash<std::string> hasher;
+		std::size_t h = hasher(entry);
+		combined ^= (h << 1);
+	}
+
+	// 16진수 변환
+	std::stringstream ss;
+	ss << std::hex << combined;
+	return ss.str();
+}
 
 std::string simpleHash(const std::string& content)
 {

@@ -74,7 +74,7 @@ void showLog(bool onelineMode)
 		}
 		else
 		{
-			std::string shortHash = currentHash.substr(0, 4);
+			std::string shortHash = currentHash.substr(0, 8);
 			std::cout << shortHash;
 			if (currentHash == headHash)
 				std::cout << " (HEAD ¡æ " << currentBranch << ") " << message << "\n";

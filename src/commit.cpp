@@ -92,7 +92,7 @@ void commit(const std::string& message)
 		entries.push_back(line);
 		snapshot << line << "\n";
 	}
-	std::string commitHash = simpleHash(snapshot.str());
+	std::string commitHash = improvedHash(entries);
 	std::string commitPath = ".minigit\\commits\\" + commitHash;
 
 	// 현재 브랜치의 HEAD 해시와 commit 해시 비교

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 /**
 * @brief 파일이 존재하는지 확인하는 함수
@@ -16,4 +17,5 @@ std::string readFileContent(const std::string& filename);
 /**
 * @brief 파일 내용을 해시로 변환하는 함수
 */
+std::string improvedHash(const std::vector<std::string>& entries);
 std::string simpleHash(const std::string& content);
