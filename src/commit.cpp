@@ -1,70 +1,11 @@
 #include "commit.h"
 #include "branch_utils.h"
+#include "commit_utils.h"
 #include "utils.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <filesystem>
 #include <chrono>
-
-namespace fs = std::filesystem;
-
-/**
-* @brief 커밋 디렉토리 생성
-* @param hash 커밋 해시코드
-*/
-bool createCommitDirectory(const std::string& hash)
-{
-	std::string path = ".minigit\\commits\\" + hash;
-	return fs::create_directory(path);
-}
-
-/**
-* @brief 커밋 디렉토리로 파일 복사
-* @param src 원본파일
-* @param destDir 복사 파일을 저장할 커밋 디렉토리
-*/
-bool copyFileToCommit(const std::string& src, const std::string& destDir)
-{
-	fs::path destPath = fs::path(destDir) / src;
-	fs::create_directories(destPath.parent_path());
-
-	std::ifstream in(src, std::ios::binary);
-	std::ofstream out(destDir + "\\" + src, std::ios::binary);
-	if (!in.is_open() || !out.is_open()) return false;
-
-	out << in.rdbuf();
-	return true;
-}
-
-/**
-* @brief 커밋 메시지와 시간을 기록하는 함수
-* @param destDir 커밋 디렉토리
-* @param message 커밋된 메세지
-*/
-void writeMeta(const std::string& destDir, const std::string& message)
-{
-	std::ofstream meta(destDir + "\\meta.txt");
-	if (!meta.is_open()) return;
-
-	std::string parentHash = getCurrentBranchHash();
-	auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	char timeStr[100];
-
-	if (ctime_s(timeStr, sizeof(timeStr), &now) != 0)
-	{
-		meta << "parent: " << parentHash << "\n";
-		meta << "message: " << message << "\n";
-		meta << "timestamp: (시간 파싱 실패)\n";
-	}
-	else
-	{
-		meta << "parent: " << parentHash << "\n";
-		meta << "message: " << message << "\n";
-		meta << "timestamp: " << timeStr;
-	}
-	meta.close();
-}
 
 void commit(const std::string& message)
 {
@@ -137,7 +78,7 @@ void commit(const std::string& message)
 		}
 	}
 	// 메세지 기록
-	writeMeta(commitPath, message);
+	writeMeta(commitPath, { currentBranchHash }, message);
 
 
 	// 브랜치 HEAD 업데이트
