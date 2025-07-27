@@ -59,14 +59,12 @@ status: 현재 브랜치의 상태를 출력합니다.
 	}
 	else if (command == "log")
 	{
-		if (argc >= 3 && std::string(argv[2]) == "--oneline")
-		{
-			showLog(true);
-		}
-		else
-		{
+		if (argc == 2)
 			showLog(false);
-		}
+		else if (argc == 3 && std::string(argv[2]) == "--oneline")
+			showLog(true);
+		else if (argc == 3 && std::string(argv[2]) == "--graph")
+			showLogWithGraph();
 	}
 	else if (command == "checkout")
 	{
