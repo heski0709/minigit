@@ -7,6 +7,7 @@
 #include "checkout.h"
 #include "branch.h"
 #include "status.h"
+#include "merge.h"
 
 int main(int argc, char* argv[])
 {
@@ -69,7 +70,10 @@ status: 현재 브랜치의 상태를 출력합니다.
 	else if (command == "checkout")
 	{
 		if (argc < 3)
+		{
 			std::cerr << "사용법: minigit checkout <commit_hash>\n";
+			return 1;
+		}
 		std::string target = argv[2];
 
 		if (target.size() == 40 && target.find_first_not_of("0123456789abcdef") == std::string::npos) 
@@ -88,6 +92,16 @@ status: 현재 브랜치의 상태를 출력합니다.
 	else if (command == "status")
 	{
 		showStatus();
+	}
+	else if (command == "merge")
+	{
+		if (argc < 3)
+		{
+			std::cerr << "사용법: minigit merge <branch>\n";
+			return 1;
+		}
+
+		mergeBranch(argv[2]);
 	}
 	else
 	{
