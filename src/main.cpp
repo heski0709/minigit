@@ -101,7 +101,8 @@ status: 현재 브랜치의 상태를 출력합니다.
 			return 1;
 		}
 
-		mergeBranch(argv[2]);
+		std::string targetBranch = argv[2];
+		mergeBranch(targetBranch);
 	}
 	else
 	{

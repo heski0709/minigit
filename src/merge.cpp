@@ -87,9 +87,9 @@ void mergeBranch(const std::string& targetBranch)
 	std::string currentHash = getCurrentBranchHash();
 	std::string currentBranch = getCurrentBranchName();
 
-	if (currentHash.empty())
+	if (currentHash.empty() || targetHash.empty())
 	{
-		std::cerr << "현재 브랜치 '" << currentBranch << "'에 커밋 이력이 없어 병합할 수 없습니다.\n";
+		std::cerr << "병합 불가: 브랜치 커밋 정보 없음\n";
 		return;
 	}
 
@@ -106,8 +106,9 @@ void mergeBranch(const std::string& targetBranch)
 	}
 	else
 	{
-		std::cerr << "Fast-forward 병합이 불가능합니다.\n";
-		std::cerr << "(병합 커밋 기능은 아직 지원되지 않습니다.)\n";
+		// 3-way 병합 수행 (충돌 가능성 포함)
+		std::cout << "[3-way merge] 병합을 수행합니다...\n";
+		mergeCommit(targetBranch);
 	}
 }
 
