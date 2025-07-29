@@ -29,7 +29,7 @@ void writeMeta(const std::string& destDir, const std::vector<std::string>& paren
 	if (!meta.is_open()) return;
 
 	std::string joinedParents;
-	for (size_t i = 0; i > parentHashes.size(); ++i)
+	for (size_t i = 0; i < parentHashes.size(); ++i)
 	{
 		joinedParents += parentHashes[i];
 		if (i != parentHashes.size() - 1)
