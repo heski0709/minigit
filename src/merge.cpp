@@ -1,11 +1,23 @@
 #include "merge.h"
+#include "utils.h"
 #include "branch_utils.h"
 #include "checkout.h"
+#include "commit_utils.h"
+
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 
 namespace fs = std::filesystem;
+
+/**
+* @brief 현재 index 파일의 내용을 string으로 읽음
+*/
+std::string getCurrentIndexSnapshot()
+{
+	return readFileContent(".minigit\\index");
+}
 
 /**
 * @brief 주어진 커밋이 다른 커밋의 조상(ancestor)인지 확인
@@ -96,4 +108,67 @@ void mergeBranch(const std::string& targetBranch)
 		std::cerr << "Fast-forward 병합이 불가능합니다.\n";
 		std::cerr << "(병합 커밋 기능은 아직 지원되지 않습니다.)\n";
 	}
+}
+
+/**
+* @brief 병합 커밋 생성 (다중 부모)
+* 
+* @param branchToMerge 병합할 대상 브랜치 이름
+*/
+void mergeCommit(const std::string& branchToMerge)
+{
+	std::string currentBranchHash = getCurrentBranchHash();
+	std::string targetBrachHash = getBranchHash(branchToMerge);
+
+	if (targetBrachHash.empty())
+	{
+		std::cerr << "병합할 브랜치 '" << branchToMerge << "' 는 커밋 이력이 업습니다.\n";
+		return;
+	}
+
+	// 병합 메세지 및 스냅샷 해시 생성
+	std::string message = "Merge branch '" + branchToMerge + ",";
+	std::string snapshot = getCurrentIndexSnapshot();
+	std::vector<std::string> snapshotLines = splitLines(snapshot);
+	std::string commitHash = improvedHash(snapshotLines);
+	std::string commitPath = ".minigit\\commits\\" + commitHash;
+
+	if (!createCommitDirectory(commitHash))
+	{
+		std::cerr << "커밋 디렉토리 생성 실패\n";
+		return;
+	}
+
+	// index 복사
+	std::ofstream destIndex(commitPath + "\\index");
+	if (!destIndex.is_open())
+	{
+		std::cerr << "index 복사 실패\n";
+		return;
+	}
+	destIndex << snapshot;
+	destIndex.close();
+
+	// 파일 복사
+	for (const auto& line : snapshotLines)
+	{
+		auto delim = line.find(":");
+		if (delim == std::string::npos) continue;
+
+		std::string filename = line.substr(0, delim);
+		copyFileToCommit(filename, commitPath);
+	}
+
+	// 메타 작성
+	writeMeta(commitPath, { currentBranchHash, targetBrachHash }, message);
+
+	// HEAD 브랜치 업데이트
+	updateBranchHead(commitHash);
+
+	// index 초기화
+	std::ofstream clearIndex(".minigit\\index", std::ios::trunc);
+	if (!clearIndex.is_open())
+		std::cerr << "index 초기화 실패\n";
+
+	std::cout << "병합 완료: '" << branchToMerge << "' -> 현재 브랜치\n";
 }
