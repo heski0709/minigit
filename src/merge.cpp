@@ -3,6 +3,7 @@
 #include "branch_utils.h"
 #include "checkout.h"
 #include "commit_utils.h"
+#include "merge_utils.h"
 
 #include <filesystem>
 #include <fstream>
@@ -122,12 +123,28 @@ void mergeCommit(const std::string& branchToMerge)
 
 	if (targetBrachHash.empty())
 	{
-		std::cerr << "병합할 브랜치 '" << branchToMerge << "' 는 커밋 이력이 업습니다.\n";
+		std::cerr << "병합할 브랜치 '" << branchToMerge << "' 는 커밋 이력이 없습니다.\n";
 		return;
 	}
 
+	auto conflicts = detectConflicts(currentBranchHash, targetBrachHash);
+	if (!conflicts.empty())
+	{
+		std::cout << "[경고] 충돌 발생! 수동으로 해결이 필요합니다.\n";
+
+		for (const auto& file : conflicts)
+		{
+			std::string baseA = readFileContent(".minigit\\commits\\" + currentBranchHash + "\\" + file);
+			std::string baseB = readFileContent(".minigit\\commits\\" + targetBrachHash + "\\" + file);
+			markConflict(file, baseA, baseB);
+			std::cout << "- " << file << " <- 충돌 마킹 완료\n";
+		}
+		std::cout << "충돌을 수동으로 해결한 후, `minigit commit`으로 병합을 완료하세요.\n";
+		return; // 병합 중단
+	}
+
 	// 병합 메세지 및 스냅샷 해시 생성
-	std::string message = "Merge branch '" + branchToMerge + ",";
+	std::string message = "Merge branch '" + branchToMerge + "'";
 	std::string snapshot = getCurrentIndexSnapshot();
 	std::vector<std::string> snapshotLines = splitLines(snapshot);
 	std::string commitHash = improvedHash(snapshotLines);
