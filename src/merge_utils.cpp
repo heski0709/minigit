@@ -1,4 +1,5 @@
 #include "merge_utils.h"
+#include "utils.h"
 #include <fstream>
 #include <filesystem>
 #include <deque>
@@ -46,11 +47,16 @@ void markConflict(const std::string& filename, const std::string& contentA, cons
 	std::ofstream out(filename);
 	if (!out.is_open()) return;
 
-	out << "<<<<<<< HEAD\n";
-	out << contentA;
-	out << "\n=======\n";
-	out << contentB;
-	out << "\n>>>>>>> merge\n";
+	std::vector<std::string> linesA = splitLines(contentA);
+	std::vector<std::string> linesB = splitLines(contentB);
+	
+	out << "<<<<< HEAD\n";
+	for (const auto& line : linesA) out << line << "\n";
+
+	out << "=====\n";
+	for (const auto& line : linesB) out << line << "\n";
+
+	out << ">>>>> MERGE\n";
 	out.close();
 }
 
@@ -113,6 +119,7 @@ std::string findCommonAncestor(const std::string& hashA, const std::string& hash
 		if (visited.count(current)) continue;
 		visited.insert(current);
 
+		// 가장 가까운 조상 발견
 		if (ancestorsA.count(current)) return current;
 
 		std::ifstream meta(".minigit\\commits\\" + current + "\\meta.txt");
