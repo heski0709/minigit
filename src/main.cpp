@@ -112,7 +112,6 @@ minigit merge --continue: 병합 완료
 		}
 
 		std::string option = argv[2];
-		mergeBranch(option);
 
 		if (option == "--abort")
 		{

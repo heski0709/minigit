@@ -17,7 +17,10 @@ bool restoreFile(const std::string& srcDir, const std::string& filename)
 	try
 	{
 		// 복원할 경로의 상위 디렉토리 생성
-		std::filesystem::create_directories(dst.parent_path());
+		std::filesystem::path parentPath = dst.parent_path();
+
+		if (!parentPath.empty())
+			std::filesystem::create_directories(parentPath);
 
 		std::ifstream in(src, std::ios::binary);
 		if (!in.is_open())
