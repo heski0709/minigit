@@ -6,19 +6,6 @@
 
 namespace fs = std::filesystem;
 
-/**
-* @brief 커밋 디렉토리 내의 파일을 현재 작업 디렉토리로 복원
-* @param srcDir 커밋 디렉토리 경로
-* @param filename 복원 파일
-*/
-bool restoreFile(const std::string& srcDir, const std::string& filename)
-{
-	std::ifstream in(srcDir + "\\" + filename, std::ios::binary);
-	std::ofstream out(filename, std::ios::binary);
-	if (!in.is_open() || !out.is_open()) return false;
-	out << in.rdbuf();
-	return true;
-}
 
 /**
 * @brief 지정된 커밋 해시를 기준으로 HEAD 갱신, 해당 커밋의 파일 상태로 작업 디렉토리 복원
