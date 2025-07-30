@@ -57,8 +57,7 @@ std::vector<std::string> splitLines(const std::string& content)
 	std::string line;
 	while (std::getline(ss, line))
 	{
-		if (!line.empty())
-			lines.push_back(line);
+		lines.push_back(line);
 	}
 	return lines;
 }
