@@ -38,6 +38,8 @@ void markConflict(
 
 /**
  * @brief 특정 커밋의 모든 조상들을 탐색하여 집합으로 반환
+ * 
+ * @param startHash 조상을 탐색할 커밋 해시
  */
 std::unordered_set<std::string> collectAncestors(const std::string& startHash);
 
@@ -45,3 +47,28 @@ std::unordered_set<std::string> collectAncestors(const std::string& startHash);
  * @brief 두 커밋의 공통 조상을 찾음 (가장 가까운 조상)
  */
 std::string findCommonAncestor(const std::string& hashA, const std::string& hashB);
+
+/**
+* @brief merge 중 상태를 기록 (충돌 발생 시)
+* 
+* @param currentHash 현재 브랜치의 커밋 해시
+* @param targetHash 병합 대상 브랜치의 커밋 해시
+*/
+void saveMergeState(const std::string& currentHash, const std::string& targetHash);
+
+/**
+* @brief MERGE_STATE 파일 삭제 (abort 또는 완료 시)
+*/
+void clearMergeState();
+
+/**
+* @brief merge 상태 파일이 존재하는 여부 반환
+*
+* @return 존재하면 true, 없을 경우 false
+*/
+bool isMergeInProgress();
+
+/**
+* @brief merge 상태를 불러와 currentHash, targetHash로 반환
+*/
+std::pair<std::string, std::string> loadMergeState();

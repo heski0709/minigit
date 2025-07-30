@@ -146,3 +146,33 @@ std::string findCommonAncestor(const std::string& hashA, const std::string& hash
 
 	return "";
 }
+
+void saveMergeState(const std::string& currentHash, const std::string& targetHash)
+{
+	std::ofstream out(".minigit\\MERGE_STATE");
+	if (!out.is_open()) return;
+
+	out << currentHash << "\n" << targetHash << "\n";
+	out.close();
+}
+
+void clearMergeState()
+{
+	fs::remove(".minigit\\MERGE_STATE");
+}
+
+bool isMergeInProgress()
+{
+	return fs::exists(".minigit\\MERGE_STATE");
+}
+
+std::pair<std::string, std::string> loadMergeState()
+{
+	std::ifstream in(".minigit/MERGE_STATE");
+	if (!in.is_open()) return { "", "" };
+
+	std::string current, target;
+	std::getline(in, current);
+	std::getline(in, target);
+	return { current, target };
+}
