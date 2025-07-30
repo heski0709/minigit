@@ -1,4 +1,5 @@
 #include "checkout.h"
+#include "checkout_utils.h"
 #include "branch_utils.h"
 #include <filesystem>
 #include <fstream>

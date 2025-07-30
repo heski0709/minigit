@@ -24,6 +24,10 @@ log [--online]: 커밋 기록을 출력합니다.
 checkout <branch_name | commit_hash>: 해당 브랜치 또는 커밋 기준으로 파일을 복원합니다.
 branch [name]: 브랜치 리스트 출력, 브랜치 생성
 status: 현재 브랜치의 상태를 출력합니다.
+merge <branch>: 해당 브랜치와 병합합니다. 충돌이 발생할 경우 아래 명령어를 입력해주세요.
+merge [--abort | --continue]:
+	--abort		병합하기 전으로 되돌립니다.
+	--continue	충돌이 발생한 후, 병합을 진행합니다.  
 )";
 		return 0;
 	}
@@ -78,11 +82,11 @@ status: 현재 브랜치의 상태를 출력합니다.
 		}
 		std::string target = argv[2];
 
-		if (target.size() == 40 && target.find_first_not_of("0123456789abcdef") == std::string::npos) 
+		if (target.size() == 40 && target.find_first_not_of("0123456789abcdef") == std::string::npos)
 		{
 			checkoutCommit(target);
 		}
-		else 
+		else
 		{
 			checkoutBranch(target);
 		}
