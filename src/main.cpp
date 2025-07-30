@@ -6,8 +6,10 @@
 #include "log.h"
 #include "checkout.h"
 #include "branch.h"
+#include "branch_utils.h"
 #include "status.h"
 #include "merge.h"
+#include "merge_utils.h"
 
 int main(int argc, char* argv[])
 {
@@ -97,12 +99,62 @@ status: 현재 브랜치의 상태를 출력합니다.
 	{
 		if (argc < 3)
 		{
-			std::cerr << "사용법: minigit merge <branch>\n";
+			std::cerr << R"(사용법:
+minigit merge <branch>: 병합 시도
+minigit merge --abort: 병합 중단
+minigit merge --continue: 병합 완료
+)";
 			return 1;
 		}
 
-		std::string targetBranch = argv[2];
-		mergeBranch(targetBranch);
+		std::string option = argv[2];
+		mergeBranch(option);
+
+		if (option == "--abort")
+		{
+			if (!isMergeInProgress())
+			{
+				std::cerr << "[오류] 현재 병합 중이 아닙니다.\n";
+				return 1;
+			}
+
+			auto [current, _] = loadMergeState();
+			if (current.empty())
+			{
+				std::cerr << "[오류] 병합 상태를 복원할 수 없습니다.\n";
+				return 1;
+			}
+
+			std::cout << "병합 중단: 이전 커밋 상태로 되돌립니다.\n";
+			restoreFilesFromBackup();
+			updateBranchHead(current);
+			clearMergeState();
+			clearBackup();
+		}
+		else if (option == "--continue")
+		{
+			if (!isMergeInProgress())
+			{
+				std::cerr << "[오류] 병합 중이 아닙니다.\n";
+				return 1;
+			}
+
+			auto [current, target] = loadMergeState();
+			if (current.empty() || target.empty())
+			{
+				std::cerr << "[오류] 병합 상태 정보가 불완전합니다.\n";
+				return 1;
+			}
+
+			std::cout << "병합 커밋을 생성합니다...\n";
+			mergeCommitFromState(current, target, "Merge continue");
+			clearMergeState();
+			clearBackup();
+		}
+		else
+		{
+			mergeBranch(option);
+		}
 	}
 	else
 	{

@@ -72,3 +72,18 @@ bool isMergeInProgress();
 * @brief merge 상태를 불러와 currentHash, targetHash로 반환
 */
 std::pair<std::string, std::string> loadMergeState();
+
+/**
+* @brief conflict 발생 시 현재 브랜치의 파일 백업
+*/
+void backupCurrentFilesBeforeMerge(const std::string& currentHash);
+
+/**
+* @brief merge --abort 실행 시 백업해놓은 파일 복원
+*/
+void restoreFilesFromBackup();
+
+/**
+* @brief .minigit/_merge_backup/ 폴더 삭제
+*/
+void clearBackup();

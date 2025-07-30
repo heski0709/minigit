@@ -11,6 +11,7 @@
 #include <iostream>
 
 namespace fs = std::filesystem;
+constexpr const char* MERGE_STATE_PATH = ".minigit\\MERGE_STATE";
 
 /**
 * @brief 현재 index 파일의 내용을 string으로 읽음
@@ -71,6 +72,15 @@ void mergeBranch(const std::string& targetBranch)
 		std::cerr << "병합 대상 브랜치가 존재하지 않습니다.\n";
 		return;
 	}
+
+
+	// 병합 상태가 존재하는지 확인 (존재하면 리턴)
+	if (fs::exists(MERGE_STATE_PATH))
+	{
+		std::cerr << "충돌 해결 후 merge [--abort | --continue] 명령어를 실행 시켜야합니다.\n";
+		return;
+	}
+
 
 	// 병합 대상 브랜치의 커밋 해시 읽기
 	std::string targetHash;
@@ -133,6 +143,9 @@ void mergeCommit(const std::string& branchToMerge)
 	{
 		std::cout << "[경고] 충돌 발생! 수동으로 해결이 필요합니다.\n";
 
+		// 현재 파일 백업
+		backupCurrentFilesBeforeMerge(currentBranchHash);
+
 		for (const auto& file : conflicts)
 		{
 			std::string baseA = readFileContent(".minigit\\commits\\" + currentBranchHash + "\\" + file);
@@ -140,12 +153,28 @@ void mergeCommit(const std::string& branchToMerge)
 			markConflict(file, baseA, baseB);
 			std::cout << "- " << file << " <- 충돌 마킹 완료\n";
 		}
+
+		// 병합 상태 저장
+		saveMergeState(currentBranchHash, targetBrachHash);
+
 		std::cout << "충돌을 수동으로 해결한 후, `minigit commit`으로 병합을 완료하세요.\n";
 		return; // 병합 중단
 	}
 
 	// 병합 메세지 및 스냅샷 해시 생성
 	std::string message = "Merge branch '" + branchToMerge + "'";
+	mergeCommitFromState(currentBranchHash, targetBrachHash, message);
+}
+
+/**
+ * @brief 병합 상태 파일을 기반으로 병합 커밋을 생성
+ *
+ * @param currentHash 현재 브랜치의 커밋 해시
+ * @param targetHash 병합할 대상 브랜치의 커밋 해시
+ */
+void mergeCommitFromState(const std::string& currentHash, const std::string& targetHash, const std::string& message)
+{
+	// index snapshot 확보
 	std::string snapshot = getCurrentIndexSnapshot();
 	std::vector<std::string> snapshotLines = splitLines(snapshot);
 	std::string commitHash = improvedHash(snapshotLines);
@@ -178,7 +207,7 @@ void mergeCommit(const std::string& branchToMerge)
 	}
 
 	// 메타 작성
-	writeMeta(commitPath, { currentBranchHash, targetBrachHash }, message);
+	writeMeta(commitPath, { currentHash, targetHash }, message);
 
 	// HEAD 브랜치 업데이트
 	updateBranchHead(commitHash);
@@ -188,5 +217,5 @@ void mergeCommit(const std::string& branchToMerge)
 	if (!clearIndex.is_open())
 		std::cerr << "index 초기화 실패\n";
 
-	std::cout << "병합 완료: '" << branchToMerge << "' -> 현재 브랜치\n";
+	std::cout << "병합 커밋이 완료되었습니다.\n";
 }
