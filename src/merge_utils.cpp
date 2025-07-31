@@ -252,7 +252,7 @@ void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& t
 
 	// current + target 파일 목록 합치기
 	for (const auto& [file, _] : currentIndex) allFiles.insert(file);
-	for (const auto& [file, _] : targetIndex) allFiles.insert(".minigit\\commits\\"+ targetHash + "\\" + file);
+	for (const auto& [file, _] : targetIndex) allFiles.insert(file);
 
 	for (const auto& filename : allFiles)
 	{

@@ -21,6 +21,17 @@ std::string getCurrentIndexSnapshot()
 	return readFileContent(".minigit\\index");
 }
 
+void applyAutoMergeFiles(const std::string& targetHash)
+{
+	auto targetIndex = parseIndex(targetHash);
+	for (const auto& [file, _] : targetIndex)
+	{
+		std::string src = ".minigit\\commits\\" + targetHash + "\\" + file;
+		if (!fs::exists(src)) continue;
+		fs::copy_file(src, file, fs::copy_options::overwrite_existing);
+	}
+}
+
 /**
 * @brief 주어진 커밋이 다른 커밋의 조상(ancestor)인지 확인
 * 
@@ -161,6 +172,7 @@ void mergeCommit(const std::string& branchToMerge)
 		return; // 병합 중단
 	}
 
+	applyAutoMergeFiles(targetBrachHash);
 	updateIndexAfterAutoMerge(currentBranchHash, targetBrachHash);
 
 	// 병합 메세지 및 스냅샷 해시 생성
