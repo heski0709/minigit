@@ -87,3 +87,12 @@ void restoreFilesFromBackup();
 * @brief .minigit/_merge_backup/ 폴더 삭제
 */
 void clearBackup();
+
+/**
+* @brief 현재 작업 디렉토리의 파일들을 기준으로 .minigit/index 파일을 갱신
+*
+* @details 현재 커밋된 파일 목록을 기준으로, 작업 디렉토리의 실제 파일 내용을 해시하여 index 파일에 기록함 (충돌 없는 병합 시 사용)
+*
+* @param baseHash 기존 커밋 해시 (병합의 베이스가 되는 커밋)
+*/
+void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& targetHash);

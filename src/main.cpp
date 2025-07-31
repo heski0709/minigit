@@ -77,12 +77,13 @@ merge [--abort | --continue]:
 	{
 		if (argc < 3)
 		{
-			std::cerr << "사용법: minigit checkout <commit_hash>\n";
+			std::cerr << "사용법: minigit checkout <commit_hash | branch_name>\n";
 			return 1;
 		}
 		std::string target = argv[2];
 
-		if (target.size() == 40 && target.find_first_not_of("0123456789abcdef") == std::string::npos)
+		// FIXME: 해시인지 브랜치인지 판단하는 코드 추가 예정
+		if (target.find_first_not_of("0123456789abcdef") == std::string::npos)
 		{
 			checkoutCommit(target);
 		}

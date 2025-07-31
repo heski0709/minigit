@@ -161,6 +161,8 @@ void mergeCommit(const std::string& branchToMerge)
 		return; // 병합 중단
 	}
 
+	updateIndexAfterAutoMerge(currentBranchHash, targetBrachHash);
+
 	// 병합 메세지 및 스냅샷 해시 생성
 	std::string message = "Merge branch '" + branchToMerge + "'";
 	mergeCommitFromState(currentBranchHash, targetBrachHash, message);

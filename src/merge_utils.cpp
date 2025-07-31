@@ -234,3 +234,33 @@ void clearBackup()
 		std::cerr << "[오류] 백업 삭제 중 예외 발생: " << e.what() << "\n";
 	}
 }
+
+void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& targetHash)
+{
+	std::ofstream out(".minigit\\index", std::ios::trunc);
+
+	if (!out.is_open())
+	{
+		std::cerr << "index 파일을 열 수 없습니다.\n";
+		return;
+	}
+
+	std::unordered_map<std::string, std::string> currentIndex = parseIndex(baseHash);
+	std::unordered_map<std::string, std::string> targetIndex = parseIndex(targetHash);
+
+	std::unordered_set<std::string> allFiles;
+
+	// current + target 파일 목록 합치기
+	for (const auto& [file, _] : currentIndex) allFiles.insert(file);
+	for (const auto& [file, _] : targetIndex) allFiles.insert(".minigit\\commits\\"+ targetHash + "\\" + file);
+
+	for (const auto& filename : allFiles)
+	{
+		if (!fs::exists(filename)) continue;
+		std::string content = readFileContent(filename);
+		std::string hash = simpleHash(content);
+		out << filename << ":" << hash << "\n";
+	}
+
+	out.close();
+}
