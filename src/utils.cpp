@@ -59,5 +59,7 @@ std::vector<std::string> splitLines(const std::string& content)
 	{
 		lines.push_back(line);
 	}
+
+	std::sort(lines.begin(), lines.end());
 	return lines;
 }
