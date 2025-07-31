@@ -53,3 +53,15 @@ void writeMeta(const std::string& destDir, const std::vector<std::string>& paren
 	}
 	meta.close();
 }
+
+std::string resolveReferenceType(const std::string& ref) {
+	if (fs::exists(".minigit/refs/heads/" + ref)) {
+		return "branch";
+	}
+	else if (fs::exists(".minigit/objects/" + ref)) {
+		return "commit";
+	}
+	else {
+		return "invalid";
+	}
+}

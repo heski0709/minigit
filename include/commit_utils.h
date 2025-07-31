@@ -21,3 +21,10 @@ bool copyFileToCommit(const std::string& src, const std::string& destDir);
 * @param message 커밋된 메세지
 */
 void writeMeta(const std::string& destDir, const std::vector<std::string>& parentHashes, const std::string& message);
+
+/**
+ * @brief 입력값이 브랜치명, 태그, 커밋해시 중 어떤 것인지 판별
+ * @param ref 사용자가 입력한 레퍼런스 문자열
+ * @return 브랜치라면 "branch", 해시라면 "commit", 태그라면 "tag", 아니면 "invalid"
+ */
+std::string resolveReferenceType(const std::string& ref);

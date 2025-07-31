@@ -3,6 +3,7 @@
 #include "init.h"
 #include "add.h"
 #include "commit.h"
+#include "commit_utils.h"
 #include "log.h"
 #include "checkout.h"
 #include "branch.h"
@@ -80,17 +81,16 @@ merge [--abort | --continue]:
 			std::cerr << "사용법: minigit checkout <commit_hash | branch_name>\n";
 			return 1;
 		}
-		std::string target = argv[2];
 
-		// FIXME: 해시인지 브랜치인지 판단하는 코드 추가 예정
-		if (target.find_first_not_of("0123456789abcdef") == std::string::npos)
-		{
-			checkoutCommit(target);
-		}
+		std::string input = argv[2];
+		std::string refType = resolveReferenceType(input);
+
+		if (refType == "branch")
+			checkoutBranch(input);
+		else if (refType == "commit")
+			checkoutCommit(input);
 		else
-		{
-			checkoutBranch(target);
-		}
+			std::cerr << "에러: '" << input << "'은(는) 유효한 브랜치, 커밋해시가 아닙니다.\n";
 	}
 	else if (command == "branch")
 	{
