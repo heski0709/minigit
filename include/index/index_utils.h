@@ -24,3 +24,7 @@ std::unordered_map<std::string, std::string> loadIndex();
  * @brief 현재 브랜치가 가리키는 커밋의 index 파일 로드
  */
 std::unordered_map<std::string, std::string> loadLastCommitIndex();
+
+void writeIndexFromWorkingDirectory(
+	const std::unordered_set<std::string>& files,
+	const std::string& outputPath);

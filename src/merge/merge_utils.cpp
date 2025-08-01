@@ -19,55 +19,26 @@ bool isMergeInProgress()
 
 void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& targetHash)
 {
-	std::ofstream out(".minigit\\index", std::ios::trunc);
+	auto currentIndex = parseIndex(".minigit\\commits\\" + baseHash + "\\index");
+	auto targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
 
-	if (!out.is_open())
-	{
-		std::cerr << "index 파일을 열 수 없습니다.\n";
-		return;
-	}
-
-	std::unordered_map<std::string, std::string> currentIndex = parseIndex(".minigit\\commits\\" + baseHash + "\\index");
-	std::unordered_map<std::string, std::string> targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
-
-	std::unordered_set<std::string> allFiles;
+	std::unordered_set<std::string> files;
 
 	// current + target 파일 목록 합치기
-	for (const auto& [file, _] : currentIndex) allFiles.insert(file);
-	for (const auto& [file, _] : targetIndex) allFiles.insert(file);
+	for (const auto& [file, _] : currentIndex) files.insert(file);
+	for (const auto& [file, _] : targetIndex) files.insert(file);
 
-	for (const auto& filename : allFiles)
-	{
-		if (!fs::exists(filename)) continue;
-		std::string content = readFileContent(filename);
-		std::string hash = simpleHash(content);
-		out << filename << ":" << hash << "\n";
-	}
-
-	out.close();
+	writeIndexFromWorkingDirectory(files, ".minigit\\index");
 }
 
 void updateIndexFromWorkingDirectory()
 {
-	std::ofstream out(".minigit\\index", std::ios::trunc);
-	if (!out.is_open())
-	{
-		std::cerr << "index 파일을 열 수 없습니다.\n";
-		return;
-	}
-
 	std::string currentHash = getCurrentBranchHash();
-	std::unordered_map<std::string, std::string> baseIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
+	auto baseIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
+	std::unordered_set<std::string> files;
+	for (const auto& [file, _] : baseIndex) files.insert(file);
 
-	for (const auto& [filename, _] : baseIndex)
-	{
-		if (!fs::exists(filename)) continue;
-		std::string content = readFileContent(filename);
-		std::string hash = simpleHash(content);
-		out << filename << ":" << hash << "\n";
-	}
-
-	out.close();
+	writeIndexFromWorkingDirectory(files, ".minigit\\index");
 }
 
 void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash)

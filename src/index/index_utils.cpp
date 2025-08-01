@@ -3,6 +3,11 @@
 #include "utils/utils.h"
 
 #include <fstream>
+#include <filesystem>
+#include <unordered_set>
+#include <iostream>
+
+namespace fs = std::filesystem;
 
 std::string readIndexSnapshot(const std::string& path)
 {
@@ -42,4 +47,26 @@ std::unordered_map<std::string, std::string> loadLastCommitIndex()
 	
 	std::string path = ".minigit\\commits\\" + lastHash + "\\index";
 	return parseIndex(path);
+}
+
+void writeIndexFromWorkingDirectory(
+	const std::unordered_set<std::string>& files,
+	const std::string& outputPath)
+{
+	std::ofstream out(outputPath, std::ios::trunc);
+	if (!out.is_open())
+	{
+		std::cerr << "[오류] index 파일을 열 수 없습니다: " << outputPath << "\n";
+		return;
+	}
+
+	for (const auto& filename : files)
+	{
+		if (!fs::exists(filename)) continue;
+		std::string content = readFileContent(filename);
+		std::string hash = simpleHash(content);
+		out << filename << ":" << hash << "\n";
+	}
+
+	out.close();
 }
