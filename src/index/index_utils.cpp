@@ -4,9 +4,9 @@
 
 #include <fstream>
 
-std::string getCurrentIndexSnapshot()
+std::string readIndexSnapshot(const std::string& path)
 {
-	return readFileContent(".minigit\\index");
+	return readFileContent(path);
 }
 
 std::unordered_map<std::string, std::string> parseIndex(const std::string& path)

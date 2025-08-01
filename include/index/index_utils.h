@@ -3,9 +3,9 @@
 #include <string>
 
 /**
-* @brief 현재 index 파일의 내용을 string으로 읽음
+* @brief path 파일의 내용을 string으로 읽음
 */
-std::string getCurrentIndexSnapshot();
+std::string readIndexSnapshot(const std::string& path = ".minigit/index");
 
 /**
  * @brief 주어진 커밋 해시 또는 인덱스 경로를 파싱하여 파일 해시 맵을 반환합니다.

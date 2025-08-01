@@ -74,7 +74,7 @@ std::string resolveReferenceType(const std::string& ref) {
 void mergeCommitFromState(const std::string& currentHash, const std::string& targetHash, const std::string& message)
 {
 	// index snapshot È®º¸
-	std::string snapshot = getCurrentIndexSnapshot();
+	std::string snapshot = readIndexSnapshot();
 	std::vector<std::string> snapshotLines = splitLines(snapshot);
 	std::string commitHash = improvedHash(snapshotLines);
 	std::string commitPath = ".minigit\\commits\\" + commitHash;
