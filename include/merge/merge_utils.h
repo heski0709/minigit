@@ -24,4 +24,10 @@ void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& t
 
 void updateIndexFromWorkingDirectory();
 
-void applyAutoMergeFiles(const std::string& targetHash);
+/**
+ * @brief 충돌이 없는 파일들을 자동 병합하여 워킹 디렉토리에 복사합니다.
+ *
+ * @param currentHash 현재 브랜치의 커밋 해시
+ * @param targetHash 병합 대상 브랜치의 커밋 해시
+ */
+void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash);

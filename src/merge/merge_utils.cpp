@@ -70,13 +70,34 @@ void updateIndexFromWorkingDirectory()
 	out.close();
 }
 
-void applyAutoMergeFiles(const std::string& targetHash)
+void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash)
 {
+	auto currentIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
 	auto targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
-	for (const auto& [file, _] : targetIndex)
+
+	for (const auto& [filename, targetHashVal] : targetIndex)
 	{
-		std::string src = ".minigit\\commits\\" + targetHash + "\\" + file;
-		if (!fs::exists(src)) continue;
-		fs::copy_file(src, file, fs::copy_options::overwrite_existing);
+		// current에도 있고, 해시가 동일하면 복사 안함
+		if (currentIndex.count(filename) && currentIndex[filename] == targetHashVal)
+			continue;
+
+		// 충돌 없이 자동 병합 가능한 파일만 복사
+		std::string targetFilePath = ".minigit\\commits\\" + targetHash + "\\" + filename;
+
+		if (!fs::exists(targetFilePath))
+		{
+			std::cerr << "[경고] 대상 파일 없음: " << targetFilePath << "\n";
+			continue;
+		}
+
+		try
+		{
+			fs::copy_file(targetFilePath, filename, fs::copy_options::overwrite_existing);
+			std::cout << "[자동 병합] " << filename << "\n";
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "[오류] 파일 복사 실패 (" << filename << "): " << e.what() << "\n";
+		}
 	}
 }

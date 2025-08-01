@@ -122,7 +122,7 @@ void mergeCommit(const std::string& branchToMerge)
 		return; // 병합 중단
 	}
 
-	applyAutoMergeFiles(targetBrachHash);
+	applyAutoMergeFiles(currentBranchHash, targetBrachHash);
 	updateIndexAfterAutoMerge(currentBranchHash, targetBrachHash);
 
 	// 병합 메세지 및 스냅샷 해시 생성
