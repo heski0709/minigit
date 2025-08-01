@@ -31,3 +31,5 @@ void updateIndexFromWorkingDirectory();
  * @param targetHash 병합 대상 브랜치의 커밋 해시
  */
 void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash);
+
+void backupIndexFiles(const std::unordered_map<std::string, std::string>& indexMap, const std::string& backupDir);

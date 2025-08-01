@@ -1,4 +1,5 @@
 #include "merge/merge_state.h"
+#include "merge/merge_utils.h"
 #include "branch/branch_utils.h"
 #include "checkout/checkout_utils.h"
 #include "index/index_utils.h"
@@ -39,16 +40,7 @@ void clearMergeState()
 void backupCurrentFilesBeforeMerge(const std::string& currentHash)
 {
 	auto index = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
-
-	for (const auto& [filename, hash] : index)
-	{
-		if (fs::exists(filename))
-		{
-			fs::path backupPath = fs::path(".minigit\\_merge_backup") / filename;
-			fs::create_directories(backupPath.parent_path());
-			fs::copy_file(filename, ".minigit\\_merge_backup\\" + filename, fs::copy_options::overwrite_existing);
-		}
-	}
+	backupIndexFiles(index, ".minigit\\_merge_backup");
 }
 
 void restoreFilesFromBackup()

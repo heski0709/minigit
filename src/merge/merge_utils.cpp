@@ -101,3 +101,16 @@ void applyAutoMergeFiles(const std::string& currentHash, const std::string& targ
 		}
 	}
 }
+
+void backupIndexFiles(const std::unordered_map<std::string, std::string>& indexMap, const std::string& backupDir)
+{
+	for (const auto& [filename, hash] : indexMap)
+	{
+		if (fs::exists(filename))
+		{
+			fs::path backupPath = fs::path(backupDir) / filename;
+			fs::create_directories(backupPath.parent_path());
+			fs::copy_file(filename, backupDir + filename, fs::copy_options::overwrite_existing);
+		}
+	}
+}
