@@ -10,6 +10,7 @@
 #include "branch/branch_utils.h"
 #include "status/status.h"
 #include "merge/merge.h"
+#include "merge/merge_commit.h"
 #include "merge/merge_state.h"
 #include "merge/merge_utils.h"
 

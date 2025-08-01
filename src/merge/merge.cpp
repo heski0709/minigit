@@ -1,9 +1,9 @@
 #include "branch/branch_utils.h"
 #include "checkout/checkout.h"
-#include "commit/commit_utils.h"
 #include "commit/commit_graph_utils.h"
 #include "merge/merge.h"
 #include "merge/merge_conflict.h"
+#include "merge/merge_commit.h"
 #include "merge/merge_state.h"
 #include "merge/merge_utils.h"
 #include "utils/utils.h"
@@ -121,9 +121,6 @@ void mergeCommit(const std::string& branchToMerge)
 		std::cout << "충돌을 수동으로 해결한 후, `minigit merge --continue`로 병합을 완료하세요.\n";
 		return; // 병합 중단
 	}
-
-	applyAutoMergeFiles(currentBranchHash, targetBrachHash);
-	updateIndexAfterAutoMerge(currentBranchHash, targetBrachHash);
 
 	// 병합 메세지 및 스냅샷 해시 생성
 	std::string message = "Merge branch '" + branchToMerge + "'";
