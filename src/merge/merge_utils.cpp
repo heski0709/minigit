@@ -27,8 +27,8 @@ void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& t
 		return;
 	}
 
-	std::unordered_map<std::string, std::string> currentIndex = parseIndex(baseHash);
-	std::unordered_map<std::string, std::string> targetIndex = parseIndex(targetHash);
+	std::unordered_map<std::string, std::string> currentIndex = parseIndex(".minigit\\commits\\" + baseHash + "\\index");
+	std::unordered_map<std::string, std::string> targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
 
 	std::unordered_set<std::string> allFiles;
 
@@ -57,7 +57,7 @@ void updateIndexFromWorkingDirectory()
 	}
 
 	std::string currentHash = getCurrentBranchHash();
-	std::unordered_map<std::string, std::string> baseIndex = parseIndex(currentHash);
+	std::unordered_map<std::string, std::string> baseIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
 
 	for (const auto& [filename, _] : baseIndex)
 	{
@@ -72,7 +72,7 @@ void updateIndexFromWorkingDirectory()
 
 void applyAutoMergeFiles(const std::string& targetHash)
 {
-	auto targetIndex = parseIndex(targetHash);
+	auto targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
 	for (const auto& [file, _] : targetIndex)
 	{
 		std::string src = ".minigit\\commits\\" + targetHash + "\\" + file;

@@ -38,7 +38,7 @@ void clearMergeState()
 
 void backupCurrentFilesBeforeMerge(const std::string& currentHash)
 {
-	auto index = parseIndex(currentHash);
+	auto index = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
 
 	for (const auto& [filename, hash] : index)
 	{
@@ -54,7 +54,7 @@ void backupCurrentFilesBeforeMerge(const std::string& currentHash)
 void restoreFilesFromBackup()
 {
 	std::string currentBranchHash = getCurrentBranchHash();
-	auto index = parseIndex(currentBranchHash);
+	auto index = parseIndex(".minigit\\commits\\" + currentBranchHash + "\\index");
 
 	for (const auto& [filename, _] : index)
 	{

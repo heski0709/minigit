@@ -10,8 +10,8 @@ std::vector<std::string> detectConflicts(const std::string& currentHash, const s
 {
 	std::vector<std::string> conflicts;
 
-	auto currentIndex = parseIndex(currentHash);
-	auto targetIndex = parseIndex(targetHash);
+	auto currentIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
+	auto targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
 
 	for (const auto& [filename, hash] : currentIndex)
 	{
@@ -25,8 +25,8 @@ std::vector<std::string> detectConflicts(const std::string& currentHash, const s
 std::string generateConflictMarkedContent(
 	const std::string& currentContent,
 	const std::string& targetContent,
-	const std::string& currentLabel = "HEAD",
-	const std::string& targetLabel = "MERGE"
+	const std::string& currentLabel,
+	const std::string& targetLabel 
 )
 {
 	std::stringstream ss;
@@ -42,8 +42,8 @@ void markConflict(
 	const std::string& filename,
 	const std::string& currentContent,
 	const std::string& targetContent,
-	const std::string& currentLabel = "HEAD",
-	const std::string& targetLabel = "MERGE"
+	const std::string& currentLabel,
+	const std::string& targetLabel
 )
 {
 	std::string marked = generateConflictMarkedContent(currentContent, targetContent, currentLabel, targetLabel);

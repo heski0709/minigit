@@ -8,22 +8,23 @@ std::string getCurrentIndexSnapshot()
 	return readFileContent(".minigit\\index");
 }
 
-std::unordered_map<std::string, std::string> parseIndex(const std::string& commitHash)
+std::unordered_map<std::string, std::string> parseIndex(const std::string& path)
 {
-	std::unordered_map<std::string, std::string> map;
-	std::ifstream index(".minigit\\commits\\" + commitHash + "\\index");
-	if (!index.is_open()) return map;
-
+	std::unordered_map<std::string, std::string> indexMap;
+	std::ifstream file(path);
 	std::string line;
-	while (std::getline(index, line))
+
+	if (!file.is_open()) return indexMap;
+
+	while (std::getline(file, line))
 	{
 		auto delim = line.find(":");
 		if (delim == std::string::npos) continue;
 
-		std::string filename = line.substr(0, delim);
+		std::string name = line.substr(0, delim);
 		std::string hash = line.substr(delim + 1);
-		map[filename] = hash;
+		indexMap[name] = hash;
 	}
 
-	return map;
+	return indexMap;
 }
