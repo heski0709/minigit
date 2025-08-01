@@ -14,3 +14,13 @@ std::string getCurrentIndexSnapshot();
  * @return 파일명과 해시 값을 매핑한 std::unordered_map
  */
 std::unordered_map<std::string, std::string> parseIndex(const std::string& path);
+
+/**
+ * @brief .minigit/index 파일 로드
+ */
+std::unordered_map<std::string, std::string> loadIndex();
+
+/**
+ * @brief 현재 브랜치가 가리키는 커밋의 index 파일 로드
+ */
+std::unordered_map<std::string, std::string> loadLastCommitIndex();

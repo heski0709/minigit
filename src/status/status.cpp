@@ -1,5 +1,6 @@
 #include "status/status.h"
 #include "branch/branch_utils.h"
+#include "index/index_utils.h"
 #include "utils/utils.h"
 
 #include <filesystem>
@@ -17,40 +18,6 @@ std::string computeFileHash(const std::string& path)
 }
 
 /**
-* @brief .minigit/index 파일을 파싱하여 map<filename, hash> 형태로 반환
-*/
-std::unordered_map<std::string, std::string> loadIndex(const std::string& indexPath)
-{
-	std::unordered_map<std::string, std::string> indexMap;
-	std::ifstream file(indexPath);
-	std::string line;
-
-	while (std::getline(file, line))
-	{
-		auto delim = line.find(":");
-		if (delim == std::string::npos) continue;
-
-		std::string name = line.substr(0, delim);
-		std::string hash = line.substr(delim + 1);
-		indexMap[name] = hash;
-	}
-
-	return indexMap;
-}
-
-/**
-* @brief .minigit/commits/<lastHash>/index 파일을 파싱하여 map<filename, hash> 형태로 반환
-*/
-std::unordered_map<std::string, std::string> loadLastCommitIndex()
-{
-	std::string lastHash = getCurrentBranchHash();
-	if (lastHash.empty()) return {};
-	
-	std::string path = ".minigit\\commits\\" + lastHash + "\\index";
-	return loadIndex(path);
-}
-
-/**
 * @brief 현재 작업 디렉토리 기준으로 상태를 출력
 */
 void showStatus()
@@ -58,7 +25,7 @@ void showStatus()
 	std::string branch = getCurrentBranchName();
 	std::cout << "현재 브랜치: " << branch << "\n\n";
 
-	auto indexMap = loadIndex(".minigit\\index");
+	auto indexMap = loadIndex();
 	auto commitMap = loadLastCommitIndex();
 
 	std::unordered_set<std::string> modified;

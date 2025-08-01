@@ -1,4 +1,5 @@
 #include "index/index_utils.h"
+#include "branch/branch_utils.h"
 #include "utils/utils.h"
 
 #include <fstream>
@@ -27,4 +28,18 @@ std::unordered_map<std::string, std::string> parseIndex(const std::string& path)
 	}
 
 	return indexMap;
+}
+
+std::unordered_map<std::string, std::string> loadIndex()
+{
+	return parseIndex(".minigit\\index");
+}
+
+std::unordered_map<std::string, std::string> loadLastCommitIndex()
+{
+	std::string lastHash = getCurrentBranchHash();
+	if (lastHash.empty()) return {};
+	
+	std::string path = ".minigit\\commits\\" + lastHash + "\\index";
+	return parseIndex(path);
 }
