@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "add.h"
-#include "utils.h"
+#include "add/add.h"
+#include "utils/utils.h"
 
 bool isAlreadyStaged(const std::string& hash)
 {

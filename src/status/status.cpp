@@ -1,6 +1,6 @@
-#include "status.h"
-#include "branch_utils.h"
-#include "utils.h"
+#include "status/status.h"
+#include "branch/branch_utils.h"
+#include "utils/utils.h"
 
 #include <filesystem>
 #include <unordered_map>

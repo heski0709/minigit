@@ -1,7 +1,8 @@
+#include "utils/utils.h"
+
 #include <fstream>
 #include <filesystem>
 #include <sstream>
-#include "utils.h"
 
 std::string improvedHash(const std::vector<std::string>& entries)
 {

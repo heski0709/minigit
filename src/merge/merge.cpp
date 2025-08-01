@@ -1,9 +1,12 @@
-#include "merge.h"
-#include "utils.h"
-#include "branch_utils.h"
-#include "checkout.h"
-#include "commit_utils.h"
-#include "merge_utils.h"
+#include "branch/branch_utils.h"
+#include "checkout/checkout.h"
+#include "commit/commit_utils.h"
+#include "commit/commit_graph_utils.h"
+#include "merge/merge.h"
+#include "merge/merge_conflict.h"
+#include "merge/merge_state.h"
+#include "merge/merge_utils.h"
+#include "utils/utils.h"
 
 #include <filesystem>
 #include <fstream>
@@ -13,59 +16,6 @@
 namespace fs = std::filesystem;
 constexpr const char* MERGE_STATE_PATH = ".minigit\\MERGE_STATE";
 
-/**
-* @brief 현재 index 파일의 내용을 string으로 읽음
-*/
-std::string getCurrentIndexSnapshot()
-{
-	return readFileContent(".minigit\\index");
-}
-
-void applyAutoMergeFiles(const std::string& targetHash)
-{
-	auto targetIndex = parseIndex(targetHash);
-	for (const auto& [file, _] : targetIndex)
-	{
-		std::string src = ".minigit\\commits\\" + targetHash + "\\" + file;
-		if (!fs::exists(src)) continue;
-		fs::copy_file(src, file, fs::copy_options::overwrite_existing);
-	}
-}
-
-/**
-* @brief 주어진 커밋이 다른 커밋의 조상(ancestor)인지 확인
-* 
-* @param ancestor 조상인지 확인할 커밋 해시
-* @paran descendant 탐색할 대상 커밋 해시
-* @return true descendant가 ancestor의 자손일 경우
-* @return false ancestor와 관련 없는 경우 (또는 경로 없음)
-*/
-bool isAncestor(const std::string& ancestor, const std::string& descendant)
-{
-	std::string current = descendant;
-	while (!current.empty())
-	{
-		if (current == ancestor) return true;
-
-		std::ifstream meta(".minigit\\commits\\" + current + "\\meta.txt");
-		if (!meta.is_open()) break;
-
-		std::string line;
-		while (std::getline(meta, line))
-		{
-			// 메타 정보에서 parent 해시 추출
-			if (line.rfind("parent: ", 0) == 0)
-			{
-				current = line.substr(8);
-				break;
-			}
-		}
-
-		meta.close();
-	}
-
-	return false;
-}
 
 /**
 * @brief 지정한 브랜치를 현재 브랜치에 병합한다.
@@ -168,7 +118,7 @@ void mergeCommit(const std::string& branchToMerge)
 		// 병합 상태 저장
 		saveMergeState(currentBranchHash, targetBrachHash);
 
-		std::cout << "충돌을 수동으로 해결한 후, `minigit commit`으로 병합을 완료하세요.\n";
+		std::cout << "충돌을 수동으로 해결한 후, `minigit merge --continue`로 병합을 완료하세요.\n";
 		return; // 병합 중단
 	}
 
@@ -180,56 +130,3 @@ void mergeCommit(const std::string& branchToMerge)
 	mergeCommitFromState(currentBranchHash, targetBrachHash, message);
 }
 
-/**
- * @brief 병합 상태 파일을 기반으로 병합 커밋을 생성
- *
- * @param currentHash 현재 브랜치의 커밋 해시
- * @param targetHash 병합할 대상 브랜치의 커밋 해시
- */
-void mergeCommitFromState(const std::string& currentHash, const std::string& targetHash, const std::string& message)
-{
-	// index snapshot 확보
-	std::string snapshot = getCurrentIndexSnapshot();
-	std::vector<std::string> snapshotLines = splitLines(snapshot);
-	std::string commitHash = improvedHash(snapshotLines);
-	std::string commitPath = ".minigit\\commits\\" + commitHash;
-
-	if (!createCommitDirectory(commitHash))
-	{
-		std::cerr << "커밋 디렉토리 생성 실패\n";
-		return;
-	}
-
-	// index 복사
-	std::ofstream destIndex(commitPath + "\\index");
-	if (!destIndex.is_open())
-	{
-		std::cerr << "index 복사 실패\n";
-		return;
-	}
-	destIndex << snapshot;
-	destIndex.close();
-
-	// 파일 복사
-	for (const auto& line : snapshotLines)
-	{
-		auto delim = line.find(":");
-		if (delim == std::string::npos) continue;
-
-		std::string filename = line.substr(0, delim);
-		copyFileToCommit(filename, commitPath);
-	}
-
-	// 메타 작성
-	writeMeta(commitPath, { currentHash, targetHash }, message);
-
-	// HEAD 브랜치 업데이트
-	updateBranchHead(commitHash);
-
-	// index 초기화
-	std::ofstream clearIndex(".minigit\\index", std::ios::trunc);
-	if (!clearIndex.is_open())
-		std::cerr << "index 초기화 실패\n";
-
-	std::cout << "병합 커밋이 완료되었습니다.\n";
-}

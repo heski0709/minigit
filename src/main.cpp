@@ -1,16 +1,17 @@
 #include <iostream>
 #include <string>
 #include "init.h"
-#include "add.h"
-#include "commit.h"
-#include "commit_utils.h"
-#include "log.h"
-#include "checkout.h"
-#include "branch.h"
-#include "branch_utils.h"
-#include "status.h"
-#include "merge.h"
-#include "merge_utils.h"
+#include "add/add.h"
+#include "commit/commit.h"
+#include "commit/commit_utils.h"
+#include "log/log.h"
+#include "checkout/checkout.h"
+#include "branch/branch.h"
+#include "branch/branch_utils.h"
+#include "status/status.h"
+#include "merge/merge.h"
+#include "merge/merge_state.h"
+#include "merge/merge_utils.h"
 
 int main(int argc, char* argv[])
 {

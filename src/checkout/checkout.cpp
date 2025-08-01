@@ -1,6 +1,7 @@
-#include "checkout.h"
-#include "checkout_utils.h"
-#include "branch_utils.h"
+#include "checkout/checkout.h"
+#include "checkout/checkout_utils.h"
+#include "branch/branch_utils.h"
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>

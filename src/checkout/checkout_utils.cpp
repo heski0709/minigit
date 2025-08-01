@@ -1,7 +1,11 @@
-#include "checkout_utils.h"
+#include "checkout/checkout_utils.h"
+#include "index/index_utils.h"
+
 #include <fstream>
 #include <filesystem>
 #include <iostream>
+
+namespace fs = std::filesystem;
 
 /**
 * @brief 커밋 디렉토리 내의 파일을 현재 작업 디렉토리로 복원

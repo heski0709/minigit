@@ -1,7 +1,8 @@
-#include "commit.h"
-#include "branch_utils.h"
-#include "commit_utils.h"
-#include "utils.h"
+#include "commit/commit.h"
+#include "commit/commit_utils.h"
+#include "branch/branch_utils.h"
+#include "utils/utils.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>

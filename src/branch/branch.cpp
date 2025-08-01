@@ -1,5 +1,6 @@
-#include "branch.h"
-#include "branch_utils.h"
+#include "branch/branch.h"
+#include "branch/branch_utils.h"
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
