@@ -8,12 +8,17 @@
 
 #include <fstream>
 #include <iostream>
+#include <unordered_set>
 
 void mergeCommitFromState(const std::string& currentHash, const std::string& targetHash, const std::string& message)
 {
 	auto conflicts = detectConflicts(currentHash, targetHash);
-	applyAutoMergeFiles(currentHash, targetHash, conflicts);
-	updateIndexAfterAutoMerge(currentHash, targetHash, conflicts);
+	std::unordered_set<std::string> conflictFiles(conflicts.begin(), conflicts.end());
+
+	// 자동병합 파일 처리
+	applyAutoMergeFiles(currentHash, targetHash, conflictFiles);
+	updateIndexAfterAutoMerge(currentHash, targetHash, conflictFiles);
+
 	// index snapshot 확보
 	std::string snapshot = readIndexSnapshot();
 	std::vector<std::string> snapshotLines = splitLines(snapshot);

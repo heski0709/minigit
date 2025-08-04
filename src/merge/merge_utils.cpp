@@ -17,9 +17,9 @@ bool isMergeInProgress()
 	return fs::exists(".minigit\\MERGE_STATE");
 }
 
-void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& targetHash)
+void updateIndexAfterAutoMerge(const std::string& currentHash, const std::string& targetHash, const std::unordered_set<std::string>& conflictFiles)
 {
-	auto currentIndex = parseIndex(".minigit\\commits\\" + baseHash + "\\index");
+	auto currentIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
 	auto targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
 
 	std::unordered_set<std::string> files;
@@ -27,6 +27,8 @@ void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& t
 	// current + target 파일 목록 합치기
 	for (const auto& [file, _] : currentIndex) files.insert(file);
 	for (const auto& [file, _] : targetIndex) files.insert(file);
+
+	for (const auto& file : conflictFiles) files.erase(file);
 
 	writeIndexFromWorkingDirectory(files, ".minigit\\index");
 }
@@ -41,18 +43,19 @@ void updateIndexFromWorkingDirectory()
 	writeIndexFromWorkingDirectory(files, ".minigit\\index");
 }
 
-void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash)
+void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash, const std::unordered_set<std::string>& conflictFiles)
 {
 	auto currentIndex = parseIndex(".minigit\\commits\\" + currentHash + "\\index");
 	auto targetIndex = parseIndex(".minigit\\commits\\" + targetHash + "\\index");
 
 	for (const auto& [filename, targetHashVal] : targetIndex)
 	{
-		// current에도 있고, 해시가 동일하면 복사 안함
-		if (currentIndex.count(filename) && currentIndex[filename] == targetHashVal)
-			continue;
+		if (conflictFiles.count(filename)) continue;
 
-		// 충돌 없이 자동 병합 가능한 파일만 복사
+		// 파일 해시가 동일하면 복사 안함
+		if (currentIndex[filename] == targetHashVal) continue;
+
+		// 해시가 다르고 충돌도 아니라면 자동 병합
 		std::string targetFilePath = ".minigit\\commits\\" + targetHash + "\\" + filename;
 
 		if (!fs::exists(targetFilePath))

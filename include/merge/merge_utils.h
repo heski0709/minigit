@@ -20,7 +20,7 @@ bool isMergeInProgress();
 * @param baseHash 기존 커밋 해시 (병합의 베이스가 되는 커밋)
 * @param targetHash 병합할 브랜치의 커밋 해시
 */
-void updateIndexAfterAutoMerge(const std::string& baseHash, const std::string& targetHash);
+void updateIndexAfterAutoMerge(const std::string& currentHash, const std::string& targetHash, const std::unordered_set<std::string>& conflictFiles);
 
 void updateIndexFromWorkingDirectory();
 
@@ -30,6 +30,6 @@ void updateIndexFromWorkingDirectory();
  * @param currentHash 현재 브랜치의 커밋 해시
  * @param targetHash 병합 대상 브랜치의 커밋 해시
  */
-void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash);
+void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash, const std::unordered_set<std::string>& conflictFiles);
 
 void backupIndexFiles(const std::unordered_map<std::string, std::string>& indexMap, const std::string& backupDir);
