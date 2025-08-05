@@ -117,7 +117,8 @@ void mergeCommit(const std::string& branchToMerge)
 
 		// 병합 상태 저장
 		saveMergeState(currentBranchHash, targetBrachHash);
-
+		// 병합 충돌 저장
+		saveMergeConflicts(conflicts);
 		std::cout << "충돌을 수동으로 해결한 후, `minigit merge --continue`로 병합을 완료하세요.\n";
 		return; // 병합 중단
 	}

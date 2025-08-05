@@ -82,3 +82,16 @@ void clearBackup()
 		std::cerr << "[오류] 백업 삭제 중 예외 발생: " << e.what() << "\n";
 	}
 }
+
+void saveMergeConflicts(const std::vector<std::string>& conflicts)
+{
+	std::ofstream out(".minigit\\MERGE_CONFLICTS");
+	if (!out.is_open()) return;
+
+	for (const auto& file : conflicts)
+	{
+		std::string hash = simpleHash(file);
+		out << file << ":" << hash << "\n";
+	}
+	out.close();
+}

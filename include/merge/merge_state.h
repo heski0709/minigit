@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 /**
 * @brief merge 중 상태를 기록 (충돌 발생 시)
@@ -34,3 +35,10 @@ void restoreFilesFromBackup();
 * @brief .minigit/_merge_backup/ 폴더 삭제
 */
 void clearBackup();
+
+/**
+* @brief merge 중 충돌이 발생한 파일 저장
+*
+* @param conflicts 충돌한 파일목록
+*/
+void saveMergeConflicts(const std::vector<std::string>& conflicts);
