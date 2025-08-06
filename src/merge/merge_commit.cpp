@@ -9,11 +9,17 @@
 #include <fstream>
 #include <iostream>
 #include <unordered_set>
+#include <unordered_map>
 
 void mergeCommitFromState(const std::string& currentHash, const std::string& targetHash, const std::string& message)
 {
-	auto conflicts = detectConflicts(currentHash, targetHash);
-	std::unordered_set<std::string> conflictFiles(conflicts.begin(), conflicts.end());
+	auto conflicts = loadMergeConflicts(".minigit\\MERGE_CONFLICTS");
+	std::unordered_set<std::string> conflictFiles;
+
+	if (!conflicts.empty()) 
+	{
+		for (auto& [filename, hash] : conflicts) conflictFiles.insert(filename);
+	}
 
 	// 자동병합 파일 처리
 	applyAutoMergeFiles(currentHash, targetHash, conflictFiles);

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-
+#include <unordered_map>
 
 /**
 * @brief 두 커밋의 idnex 파일을 비교하여 충돌 파일을 반환
@@ -60,3 +60,6 @@ void markConflict(
     const std::string& currentLabel = "HEAD",
     const std::string& targetLabel = "MERGE"
 );
+
+
+std::unordered_map<std::string, std::string> loadMergeConflicts(const std::string& path);

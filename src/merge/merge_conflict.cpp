@@ -56,3 +56,8 @@ void markConflict(
 	out << marked;
 	out.close();
 }
+
+std::unordered_map<std::string, std::string> loadMergeConflicts(const std::string& path)
+{
+	return parseIndex(path);
+}
