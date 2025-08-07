@@ -62,4 +62,6 @@ void markConflict(
 );
 
 
-std::unordered_map<std::string, std::string> loadMergeConflicts(const std::string& path);
+std::unordered_map<std::string, std::string> loadMergeConflicts();
+
+void clearMergeConflicts();

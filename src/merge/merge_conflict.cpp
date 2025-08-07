@@ -5,6 +5,9 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 std::vector<std::string> detectConflicts(const std::string& currentHash, const std::string& targetHash)
 {
@@ -57,7 +60,12 @@ void markConflict(
 	out.close();
 }
 
-std::unordered_map<std::string, std::string> loadMergeConflicts(const std::string& path)
+std::unordered_map<std::string, std::string> loadMergeConflicts()
 {
-	return parseIndex(path);
+	return parseIndex(".minigit\\MERGE_CONFLICTS");
+}
+
+void clearMergeConflicts()
+{
+	fs::remove(".minigit\\MERGE_CONFLICTS");
 }

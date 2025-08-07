@@ -12,6 +12,7 @@
 #include "merge/merge.h"
 #include "merge/merge_commit.h"
 #include "merge/merge_state.h"
+#include "merge/merge_conflict.h"
 #include "merge/merge_utils.h"
 
 int main(int argc, char* argv[])
@@ -155,6 +156,7 @@ minigit merge --continue: 병합 완료
 			std::cout << "병합 커밋을 생성합니다...\n";
 			mergeCommitFromState(current, target, "Merge continue");
 			clearMergeState();
+			clearMergeConflicts();
 			clearBackup();
 		}
 		else

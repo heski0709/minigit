@@ -15,16 +15,16 @@ namespace fs = std::filesystem;
 */
 bool restoreFile(const std::string& srcDir, const std::string& filename)
 {
-	std::filesystem::path src = std::filesystem::path(srcDir) / filename;
-	std::filesystem::path dst = filename;
+	fs::path src = fs::path(srcDir) / filename;
+	fs::path dst = filename;
 
 	try
 	{
 		// 복원할 경로의 상위 디렉토리 생성
-		std::filesystem::path parentPath = dst.parent_path();
+		fs::path parentPath = dst.parent_path();
 
 		if (!parentPath.empty())
-			std::filesystem::create_directories(parentPath);
+			fs::create_directories(parentPath);
 
 		std::ifstream in(src, std::ios::binary);
 		if (!in.is_open())
