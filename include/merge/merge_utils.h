@@ -6,29 +6,29 @@
 
 
 /**
-* @brief merge »óÅÂ ÆÄÀÏÀÌ Á¸ÀçÇÏ´Â ¿©ºÎ ¹İÈ¯
+* @brief merge ìƒíƒœ íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ” ì—¬ë¶€ ë°˜í™˜
 *
-* @return Á¸ÀçÇÏ¸é true, ¾øÀ» °æ¿ì false
+* @return ì¡´ì¬í•˜ë©´ true, ì—†ì„ ê²½ìš° false
 */
 bool isMergeInProgress();
 
 /**
-* @brief ÇöÀç ÀÛ¾÷ µğ·ºÅä¸®ÀÇ ÆÄÀÏµéÀ» ±âÁØÀ¸·Î .minigit/index ÆÄÀÏÀ» °»½Å
+* @brief í˜„ì¬ ì‘ì—… ë””ë ‰í† ë¦¬ì˜ íŒŒì¼ë“¤ì„ ê¸°ì¤€ìœ¼ë¡œ .minigit/index íŒŒì¼ì„ ê°±ì‹ 
 *
-* @details ÇöÀç Ä¿¹ÔµÈ ÆÄÀÏ ¸ñ·ÏÀ» ±âÁØÀ¸·Î, ÀÛ¾÷ µğ·ºÅä¸®ÀÇ ½ÇÁ¦ ÆÄÀÏ ³»¿ëÀ» ÇØ½ÃÇÏ¿© index ÆÄÀÏ¿¡ ±â·ÏÇÔ (Ãæµ¹ ¾ø´Â º´ÇÕ ½Ã »ç¿ë)
+* @details í˜„ì¬ ì»¤ë°‹ëœ íŒŒì¼ ëª©ë¡ì„ ê¸°ì¤€ìœ¼ë¡œ, ì‘ì—… ë””ë ‰í† ë¦¬ì˜ ì‹¤ì œ íŒŒì¼ ë‚´ìš©ì„ í•´ì‹œí•˜ì—¬ index íŒŒì¼ì— ê¸°ë¡í•¨ (ì¶©ëŒ ì—†ëŠ” ë³‘í•© ì‹œ ì‚¬ìš©)
 *
-* @param baseHash ±âÁ¸ Ä¿¹Ô ÇØ½Ã (º´ÇÕÀÇ º£ÀÌ½º°¡ µÇ´Â Ä¿¹Ô)
-* @param targetHash º´ÇÕÇÒ ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
+* @param baseHash ê¸°ì¡´ ì»¤ë°‹ í•´ì‹œ (ë³‘í•©ì˜ ë² ì´ìŠ¤ê°€ ë˜ëŠ” ì»¤ë°‹)
+* @param targetHash ë³‘í•©í•  ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
 */
 void updateIndexAfterAutoMerge(const std::string& currentHash, const std::string& targetHash, const std::unordered_set<std::string>& conflictFiles);
 
 void updateIndexFromWorkingDirectory();
 
 /**
- * @brief Ãæµ¹ÀÌ ¾ø´Â ÆÄÀÏµéÀ» ÀÚµ¿ º´ÇÕÇÏ¿© ¿öÅ· µğ·ºÅä¸®¿¡ º¹»çÇÕ´Ï´Ù.
+ * @brief ì¶©ëŒì´ ì—†ëŠ” íŒŒì¼ë“¤ì„ ìë™ ë³‘í•©í•˜ì—¬ ì›Œí‚¹ ë””ë ‰í† ë¦¬ì— ë³µì‚¬í•©ë‹ˆë‹¤.
  *
- * @param currentHash ÇöÀç ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
- * @param targetHash º´ÇÕ ´ë»ó ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
+ * @param currentHash í˜„ì¬ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
+ * @param targetHash ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
  */
 void applyAutoMergeFiles(const std::string& currentHash, const std::string& targetHash, const std::unordered_set<std::string>& conflictFiles);
 

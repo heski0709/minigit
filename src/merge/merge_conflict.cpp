@@ -53,7 +53,7 @@ void markConflict(
 
 	std::ofstream out(filename);
 	if (!out.is_open()) {
-		std::cerr << "[¿À·ù] Ãæµ¹ ÆÄÀÏ ¾²±â ½ÇÆÐ: " << filename << "\n";
+		std::cerr << "[ì˜¤ë¥˜] ì¶©ëŒ íŒŒì¼ ì“°ê¸° ì‹¤íŒ¨: " << filename << "\n";
 		return;
 	}
 	out << marked;

@@ -10,9 +10,9 @@ namespace fs = std::filesystem;
 
 
 /**
-* @brief ÁöÁ¤µÈ Ä¿¹Ô ÇØ½Ã¸¦ ±âÁØÀ¸·Î HEAD °»½Å, ÇØ´ç Ä¿¹ÔÀÇ ÆÄÀÏ »óÅÂ·Î ÀÛ¾÷ µğ·ºÅä¸® º¹¿ø
-* GitÀÇ 'reset --hard <hash>'¿Í À¯»çÇÑ ¹æ½ÄÀ¸·Î ÀÛµ¿
-* @param hash º¹¿øÇÒ Ä¿¹ÔÀÇ ÇØ½ÃÄÚµå
+* @brief ì§€ì •ëœ ì»¤ë°‹ í•´ì‹œë¥¼ ê¸°ì¤€ìœ¼ë¡œ HEAD ê°±ì‹ , í•´ë‹¹ ì»¤ë°‹ì˜ íŒŒì¼ ìƒíƒœë¡œ ì‘ì—… ë””ë ‰í† ë¦¬ ë³µì›
+* Gitì˜ 'reset --hard <hash>'ì™€ ìœ ì‚¬í•œ ë°©ì‹ìœ¼ë¡œ ì‘ë™
+* @param hash ë³µì›í•  ì»¤ë°‹ì˜ í•´ì‹œì½”ë“œ
 */
 void checkoutCommit(const std::string& hash)
 {
@@ -20,21 +20,21 @@ void checkoutCommit(const std::string& hash)
 
 	if (!fs::exists(commitDir) || !fs::is_directory(commitDir))
 	{
-		std::cerr << "Á¸ÀçÇÏÁö ¾Ê´Â Ä¿¹Ô ÇØ½ÃÀÔ´Ï´Ù: " << hash << "\n";
+		std::cerr << "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì»¤ë°‹ í•´ì‹œì…ë‹ˆë‹¤: " << hash << "\n";
 		return;
 	}
 
 	std::ifstream index(commitDir + "\\index");
 	if (!index.is_open())
 	{
-		std::cerr << "Ä¿¹Ô index ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n";
+		std::cerr << "ì»¤ë°‹ index íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
 	std::string line;
 	while (std::getline(index, line))
 	{
-		// ¿¹: "a.txt:abcd1234" Çü½Ä ¡æ ÆÄÀÏ¸í¸¸ ÃßÃâ
+		// ì˜ˆ: "a.txt:abcd1234" í˜•ì‹ â†’ íŒŒì¼ëª…ë§Œ ì¶”ì¶œ
 		auto delim = line.find(':');
 		if (delim == std::string::npos) continue;
 
@@ -42,37 +42,37 @@ void checkoutCommit(const std::string& hash)
 
 		bool ok = restoreFile(commitDir, filename);
 		if (ok)
-			std::cout << filename << " º¹¿ø ¿Ï·á\n";
+			std::cout << filename << " ë³µì› ì™„ë£Œ\n";
 		else
-			std::cout << filename << " º¹¿ø ½ÇÆĞ\n";
+			std::cout << filename << " ë³µì› ì‹¤íŒ¨\n";
 	}
 
 	updateBranchHead(hash);
 
-	std::cout << "checkout ¿Ï·á. HEAD ¡æ " << hash << "\n";
+	std::cout << "checkout ì™„ë£Œ. HEAD â†’ " << hash << "\n";
 }
 
 /**
-* @brief ºê·£Ä¡ ÀÌ¸§À» ±âÁØÀ¸·Î ÇØ´ç ºê·£Ä¡·Î ÀÌµ¿
+* @brief ë¸Œëœì¹˜ ì´ë¦„ì„ ê¸°ì¤€ìœ¼ë¡œ í•´ë‹¹ ë¸Œëœì¹˜ë¡œ ì´ë™
 * 
-* @param branchName ÀÌµ¿ÇÒ ºê·£Ä¡ ÀÌ¸§
+* @param branchName ì´ë™í•  ë¸Œëœì¹˜ ì´ë¦„
 */
 void checkoutBranch(const std::string& branchName)
 {
 	std::string branchPath = ".minigit\\refs\\heads\\" + branchName;
 
-	// ºê·£Ä¡ Á¸Àç È®ÀÎ
+	// ë¸Œëœì¹˜ ì¡´ì¬ í™•ì¸
 	if (!fs::exists(branchPath))
 	{
-		std::cerr << "ÇØ´çÇÏ´Â ºê·£Ä¡°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n";
+		std::cerr << "í•´ë‹¹í•˜ëŠ” ë¸Œëœì¹˜ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
-	// ÇØ´ç ºê·£Ä¡ HEADÀÇ Ä¿¹Ô ÇØ½Ã ÀĞ±â
+	// í•´ë‹¹ ë¸Œëœì¹˜ HEADì˜ ì»¤ë°‹ í•´ì‹œ ì½ê¸°
 	std::ifstream branchHEAD(branchPath);
 	if (!branchHEAD.is_open())
 	{
-		std::cerr << "ºê·£Ä¡ Á¤º¸¸¦ ÀĞÀ» ¼ö ¾ø½À´Ï´Ù.\n";
+		std::cerr << "ë¸Œëœì¹˜ ì •ë³´ë¥¼ ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
@@ -80,20 +80,20 @@ void checkoutBranch(const std::string& branchName)
 	std::getline(branchHEAD, commitHash);
 	branchHEAD.close();
 
-	// HEAD Æ÷ÀÎÅÍ¸¦ ÇØ´ç ºê·£Ä¡·Î ¼³Á¤
+	// HEAD í¬ì¸í„°ë¥¼ í•´ë‹¹ ë¸Œëœì¹˜ë¡œ ì„¤ì •
 	std::ofstream head(".minigit\\HEAD");
 	if (!head.is_open())
 	{
-		std::cerr << "HEAD ¾÷µ¥ÀÌÆ® ½ÇÆĞ\n";
+		std::cerr << "HEAD ì—…ë°ì´íŠ¸ ì‹¤íŒ¨\n";
 		return;
 	}
 	head << "refs/heads/" << branchName;
 
-	// ÇØ´ç Ä¿¹Ô ±âÁØÀ¸·Î checkout
+	// í•´ë‹¹ ì»¤ë°‹ ê¸°ì¤€ìœ¼ë¡œ checkout
 	if (!commitHash.empty())
 	{
 		checkoutCommit(commitHash);
 	}
 
-	std::cout << "ºê·£Ä¡ '" << branchName << "' ·Î ÀÌµ¿¿Ï·á\n";
+	std::cout << "ë¸Œëœì¹˜ '" << branchName << "' ë¡œ ì´ë™ì™„ë£Œ\n";
 }

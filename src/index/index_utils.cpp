@@ -55,7 +55,7 @@ void writeIndexFromWorkingDirectory(
 	std::ofstream out(outputPath, std::ios::trunc);
 	if (!out.is_open())
 	{
-		std::cerr << "[¿À·ù] index ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù: " << outputPath << "\n";
+		std::cerr << "[ì˜¤ë¥˜] index íŒŒì¼ì„ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " << outputPath << "\n";
 		return;
 	}
 

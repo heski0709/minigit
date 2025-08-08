@@ -18,32 +18,32 @@ constexpr const char* MERGE_STATE_PATH = ".minigit\\MERGE_STATE";
 
 
 /**
-* @brief ÁöÁ¤ÇÑ ºê·£Ä¡¸¦ ÇöÀç ºê·£Ä¡¿¡ º´ÇÕÇÑ´Ù.
-* @details fast-forward ¹æ½Ä¸¸ Áö¿øÇÏ¸ç, Ãæµ¹ Ã³¸® ¹× ´ÙÁß ºÎ¸ğ º´ÇÕÀº Áö¿øÇÏÁö ¾ÊÀ½
+* @brief ì§€ì •í•œ ë¸Œëœì¹˜ë¥¼ í˜„ì¬ ë¸Œëœì¹˜ì— ë³‘í•©í•œë‹¤.
+* @details fast-forward ë°©ì‹ë§Œ ì§€ì›í•˜ë©°, ì¶©ëŒ ì²˜ë¦¬ ë° ë‹¤ì¤‘ ë¶€ëª¨ ë³‘í•©ì€ ì§€ì›í•˜ì§€ ì•ŠìŒ
 *
-* @param targetBranch º´ÇÕ ´ë»ó ºê·£Ä¡ ÀÌ¸§
+* @param targetBranch ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ ì´ë¦„
 */
 void mergeBranch(const std::string& targetBranch)
 {
 	std::string targetPath = ".minigit\\refs\\heads\\" + targetBranch;
 
-	// ´ë»ó ºê·£Ä¡°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+	// ëŒ€ìƒ ë¸Œëœì¹˜ê°€ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
 	if (!fs::exists(targetPath))
 	{
-		std::cerr << "º´ÇÕ ´ë»ó ºê·£Ä¡°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n";
+		std::cerr << "ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
 
-	// º´ÇÕ »óÅÂ°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎ (Á¸ÀçÇÏ¸é ¸®ÅÏ)
+	// ë³‘í•© ìƒíƒœê°€ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸ (ì¡´ì¬í•˜ë©´ ë¦¬í„´)
 	if (fs::exists(MERGE_STATE_PATH))
 	{
-		std::cerr << "Ãæµ¹ ÇØ°á ÈÄ merge [--abort | --continue] ¸í·É¾î¸¦ ½ÇÇà ½ÃÄÑ¾ßÇÕ´Ï´Ù.\n";
+		std::cerr << "ì¶©ëŒ í•´ê²° í›„ merge [--abort | --continue] ëª…ë ¹ì–´ë¥¼ ì‹¤í–‰ ì‹œì¼œì•¼í•©ë‹ˆë‹¤.\n";
 		return;
 	}
 
 
-	// º´ÇÕ ´ë»ó ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã ÀĞ±â
+	// ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ ì½ê¸°
 	std::string targetHash;
 	std::ifstream in(targetPath);
 	std::getline(in, targetHash);
@@ -51,7 +51,7 @@ void mergeBranch(const std::string& targetBranch)
 
 	if (targetHash.empty())
 	{
-		std::cerr << "º´ÇÕ ´ë»ó ºê·£Ä¡¿¡ Ä¿¹ÔÀÌ ¾ø½À´Ï´Ù.\n";
+		std::cerr << "ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì— ì»¤ë°‹ì´ ì—†ìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
@@ -60,33 +60,33 @@ void mergeBranch(const std::string& targetBranch)
 
 	if (currentHash.empty() || targetHash.empty())
 	{
-		std::cerr << "º´ÇÕ ºÒ°¡: ºê·£Ä¡ Ä¿¹Ô Á¤º¸ ¾øÀ½\n";
+		std::cerr << "ë³‘í•© ë¶ˆê°€: ë¸Œëœì¹˜ ì»¤ë°‹ ì •ë³´ ì—†ìŒ\n";
 		return;
 	}
 
-	// Fast-forward °¡´ÉÇÑÁö È®ÀÎ
+	// Fast-forward ê°€ëŠ¥í•œì§€ í™•ì¸
 	if (isAncestor(currentHash, targetHash))
 	{
-		std::cout << "Fast-forward º´ÇÕÀ» ¼öÇàÇÕ´Ï´Ù...\n";
+		std::cout << "Fast-forward ë³‘í•©ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤...\n";
 
-		// Ä¿¹Ô ³»¿ë º¹¿ø ¹× HEAD °»½Å
+		// ì»¤ë°‹ ë‚´ìš© ë³µì› ë° HEAD ê°±ì‹ 
 		checkoutCommit(targetHash);
 		updateBranchHead(targetHash);
 
-		std::cout << "º´ÇÕ ¿Ï·á: '" << targetBranch << "' -> '" << currentBranch << "'\n";
+		std::cout << "ë³‘í•© ì™„ë£Œ: '" << targetBranch << "' -> '" << currentBranch << "'\n";
 	}
 	else
 	{
-		// 3-way º´ÇÕ ¼öÇà (Ãæµ¹ °¡´É¼º Æ÷ÇÔ)
-		std::cout << "[3-way merge] º´ÇÕÀ» ¼öÇàÇÕ´Ï´Ù...\n";
+		// 3-way ë³‘í•© ìˆ˜í–‰ (ì¶©ëŒ ê°€ëŠ¥ì„± í¬í•¨)
+		std::cout << "[3-way merge] ë³‘í•©ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤...\n";
 		mergeCommit(targetBranch);
 	}
 }
 
 /**
-* @brief º´ÇÕ Ä¿¹Ô »ı¼º (´ÙÁß ºÎ¸ğ)
+* @brief ë³‘í•© ì»¤ë°‹ ìƒì„± (ë‹¤ì¤‘ ë¶€ëª¨)
 * 
-* @param branchToMerge º´ÇÕÇÒ ´ë»ó ºê·£Ä¡ ÀÌ¸§
+* @param branchToMerge ë³‘í•©í•  ëŒ€ìƒ ë¸Œëœì¹˜ ì´ë¦„
 */
 void mergeCommit(const std::string& branchToMerge)
 {
@@ -95,16 +95,16 @@ void mergeCommit(const std::string& branchToMerge)
 
 	if (targetBrachHash.empty())
 	{
-		std::cerr << "º´ÇÕÇÒ ºê·£Ä¡ '" << branchToMerge << "' ´Â Ä¿¹Ô ÀÌ·ÂÀÌ ¾ø½À´Ï´Ù.\n";
+		std::cerr << "ë³‘í•©í•  ë¸Œëœì¹˜ '" << branchToMerge << "' ëŠ” ì»¤ë°‹ ì´ë ¥ì´ ì—†ìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
 	auto conflicts = detectConflicts(currentBranchHash, targetBrachHash);
 	if (!conflicts.empty())
 	{
-		std::cout << "[°æ°í] Ãæµ¹ ¹ß»ı! ¼öµ¿À¸·Î ÇØ°áÀÌ ÇÊ¿äÇÕ´Ï´Ù.\n";
+		std::cout << "[ê²½ê³ ] ì¶©ëŒ ë°œìƒ! ìˆ˜ë™ìœ¼ë¡œ í•´ê²°ì´ í•„ìš”í•©ë‹ˆë‹¤.\n";
 
-		// ÇöÀç ÆÄÀÏ ¹é¾÷
+		// í˜„ì¬ íŒŒì¼ ë°±ì—…
 		backupCurrentFilesBeforeMerge(currentBranchHash);
 
 		for (const auto& file : conflicts)
@@ -112,18 +112,18 @@ void mergeCommit(const std::string& branchToMerge)
 			std::string baseA = readFileContent(".minigit\\commits\\" + currentBranchHash + "\\" + file);
 			std::string baseB = readFileContent(".minigit\\commits\\" + targetBrachHash + "\\" + file);
 			markConflict(file, baseA, baseB);
-			std::cout << "- " << file << " <- Ãæµ¹ ¸¶Å· ¿Ï·á\n";
+			std::cout << "- " << file << " <- ì¶©ëŒ ë§ˆí‚¹ ì™„ë£Œ\n";
 		}
 
-		// º´ÇÕ »óÅÂ ÀúÀå
+		// ë³‘í•© ìƒíƒœ ì €ì¥
 		saveMergeState(currentBranchHash, targetBrachHash);
-		// º´ÇÕ Ãæµ¹ ÀúÀå
+		// ë³‘í•© ì¶©ëŒ ì €ì¥
 		saveMergeConflicts(conflicts);
-		std::cout << "Ãæµ¹À» ¼öµ¿À¸·Î ÇØ°áÇÑ ÈÄ, `minigit merge --continue`·Î º´ÇÕÀ» ¿Ï·áÇÏ¼¼¿ä.\n";
-		return; // º´ÇÕ Áß´Ü
+		std::cout << "ì¶©ëŒì„ ìˆ˜ë™ìœ¼ë¡œ í•´ê²°í•œ í›„, `minigit merge --continue`ë¡œ ë³‘í•©ì„ ì™„ë£Œí•˜ì„¸ìš”.\n";
+		return; // ë³‘í•© ì¤‘ë‹¨
 	}
 
-	// º´ÇÕ ¸Ş¼¼Áö ¹× ½º³À¼¦ ÇØ½Ã »ı¼º
+	// ë³‘í•© ë©”ì„¸ì§€ ë° ìŠ¤ëƒ…ìƒ· í•´ì‹œ ìƒì„±
 	std::string message = "Merge branch '" + branchToMerge + "'";
 	mergeCommitFromState(currentBranchHash, targetBrachHash, message);
 }

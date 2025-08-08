@@ -4,25 +4,25 @@
 #include <string>
 
 /**
-* @brief path ÆÄÀÏÀÇ ³»¿ëÀ» stringÀ¸·Î ÀĞÀ½
+* @brief path íŒŒì¼ì˜ ë‚´ìš©ì„ stringìœ¼ë¡œ ì½ìŒ
 */
 std::string readIndexSnapshot(const std::string& path = ".minigit/index");
 
 /**
- * @brief ÁÖ¾îÁø Ä¿¹Ô ÇØ½Ã ¶Ç´Â ÀÎµ¦½º °æ·Î¸¦ ÆÄ½ÌÇÏ¿© ÆÄÀÏ ÇØ½Ã ¸ÊÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+ * @brief ì£¼ì–´ì§„ ì»¤ë°‹ í•´ì‹œ ë˜ëŠ” ì¸ë±ìŠ¤ ê²½ë¡œë¥¼ íŒŒì‹±í•˜ì—¬ íŒŒì¼ í•´ì‹œ ë§µì„ ë°˜í™˜í•©ë‹ˆë‹¤.
  *
- * @param path index ÆÄÀÏÀÇ °æ·Î (¿¹: ".minigit/index" ¶Ç´Â ".minigit/commits/<hash>/index")
- * @return ÆÄÀÏ¸í°ú ÇØ½Ã °ªÀ» ¸ÅÇÎÇÑ std::unordered_map
+ * @param path index íŒŒì¼ì˜ ê²½ë¡œ (ì˜ˆ: ".minigit/index" ë˜ëŠ” ".minigit/commits/<hash>/index")
+ * @return íŒŒì¼ëª…ê³¼ í•´ì‹œ ê°’ì„ ë§¤í•‘í•œ std::unordered_map
  */
 std::unordered_map<std::string, std::string> parseIndex(const std::string& path);
 
 /**
- * @brief .minigit/index ÆÄÀÏ ·Îµå
+ * @brief .minigit/index íŒŒì¼ ë¡œë“œ
  */
 std::unordered_map<std::string, std::string> loadIndex();
 
 /**
- * @brief ÇöÀç ºê·£Ä¡°¡ °¡¸®Å°´Â Ä¿¹ÔÀÇ index ÆÄÀÏ ·Îµå
+ * @brief í˜„ì¬ ë¸Œëœì¹˜ê°€ ê°€ë¦¬í‚¤ëŠ” ì»¤ë°‹ì˜ index íŒŒì¼ ë¡œë“œ
  */
 std::unordered_map<std::string, std::string> loadLastCommitIndex();
 

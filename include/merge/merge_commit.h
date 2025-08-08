@@ -2,9 +2,9 @@
 #include <string>
 
 /**
- * @brief º´ÇÕ »óÅÂ ÆÄÀÏÀ» ±â¹İÀ¸·Î º´ÇÕ Ä¿¹ÔÀ» »ı¼º
+ * @brief ë³‘í•© ìƒíƒœ íŒŒì¼ì„ ê¸°ë°˜ìœ¼ë¡œ ë³‘í•© ì»¤ë°‹ì„ ìƒì„±
  *
- * @param currentHash ÇöÀç ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
- * @param targetHash º´ÇÕÇÒ ´ë»ó ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
+ * @param currentHash í˜„ì¬ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
+ * @param targetHash ë³‘í•©í•  ëŒ€ìƒ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
  */
 void mergeCommitFromState(const std::string& currentHash, const std::string& targetHash, const std::string& message);

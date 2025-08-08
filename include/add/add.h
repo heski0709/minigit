@@ -2,13 +2,13 @@
 #include <string>
 
 /**
-* @brief index ÆÄÀÏ¿¡ °°Àº ÇØ½Ã°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
-* @param hash ÇØ´ç ÆÄÀÏÀÇ ÇØ½ÃÄÚµå
+* @brief index íŒŒì¼ì— ê°™ì€ í•´ì‹œê°€ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
+* @param hash í•´ë‹¹ íŒŒì¼ì˜ í•´ì‹œì½”ë“œ
 */
 bool isAlreadyStaged(const std::string& hash);
 
 /**
-* @brief index ÆÄÀÏ¿¡ ÆÄÀÏ¸íÀ» Ãß°¡ÇÏ´Â ÇÔ¼ö
-* @param filename ÆÄÀÏ ÀÌ¸§
+* @brief index íŒŒì¼ì— íŒŒì¼ëª…ì„ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜
+* @param filename íŒŒì¼ ì´ë¦„
 */
 void add(const std::string& filename);

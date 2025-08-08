@@ -24,7 +24,7 @@ void updateIndexAfterAutoMerge(const std::string& currentHash, const std::string
 
 	std::unordered_set<std::string> files;
 
-	// current + target ÆÄÀÏ ¸ñ·Ï ÇÕÄ¡±â
+	// current + target íŒŒì¼ ëª©ë¡ í•©ì¹˜ê¸°
 	for (const auto& [file, _] : currentIndex) files.insert(file);
 	for (const auto& [file, _] : targetIndex) files.insert(file);
 
@@ -52,26 +52,26 @@ void applyAutoMergeFiles(const std::string& currentHash, const std::string& targ
 	{
 		if (conflictFiles.count(filename)) continue;
 
-		// ÆÄÀÏ ÇØ½Ã°¡ µ¿ÀÏÇÏ¸é º¹»ç ¾ÈÇÔ
+		// íŒŒì¼ í•´ì‹œê°€ ë™ì¼í•˜ë©´ ë³µì‚¬ ì•ˆí•¨
 		if (currentIndex[filename] == targetHashVal) continue;
 
-		// ÇØ½Ã°¡ ´Ù¸£°í Ãæµ¹µµ ¾Æ´Ï¶ó¸é ÀÚµ¿ º´ÇÕ
+		// í•´ì‹œê°€ ë‹¤ë¥´ê³  ì¶©ëŒë„ ì•„ë‹ˆë¼ë©´ ìë™ ë³‘í•©
 		std::string targetFilePath = ".minigit\\commits\\" + targetHash + "\\" + filename;
 
 		if (!fs::exists(targetFilePath))
 		{
-			std::cerr << "[°æ°í] ´ë»ó ÆÄÀÏ ¾øÀ½: " << targetFilePath << "\n";
+			std::cerr << "[ê²½ê³ ] ëŒ€ìƒ íŒŒì¼ ì—†ìŒ: " << targetFilePath << "\n";
 			continue;
 		}
 
 		try
 		{
 			fs::copy_file(targetFilePath, filename, fs::copy_options::overwrite_existing);
-			std::cout << "[ÀÚµ¿ º´ÇÕ] " << filename << "\n";
+			std::cout << "[ìë™ ë³‘í•©] " << filename << "\n";
 		}
 		catch (const std::exception& e)
 		{
-			std::cerr << "[¿À·ù] ÆÄÀÏ º¹»ç ½ÇÆĞ (" << filename << "): " << e.what() << "\n";
+			std::cerr << "[ì˜¤ë¥˜] íŒŒì¼ ë³µì‚¬ ì‹¤íŒ¨ (" << filename << "): " << e.what() << "\n";
 		}
 	}
 }

@@ -1,13 +1,13 @@
 #pragma once
 
 /**
-* @brief µğ·ºÅä¸® »ı¼ºÇÔ¼ö
-* @param path »ı¼ºÇÒ °æ·Î
-* @return ¼º°ø ¿©ºÎ
+* @brief ë””ë ‰í† ë¦¬ ìƒì„±í•¨ìˆ˜
+* @param path ìƒì„±í•  ê²½ë¡œ
+* @return ì„±ê³µ ì—¬ë¶€
 */
 bool createDirectory(const std::string& path);
 
 /**
-* @brief minigit ÀúÀå¼Ò ÃÊ±âÈ­ ÇÔ¼ö
+* @brief minigit ì €ì¥ì†Œ ì´ˆê¸°í™” í•¨ìˆ˜
 */
 void init();

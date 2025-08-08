@@ -48,7 +48,7 @@ void writeMeta(const std::string& destDir, const std::vector<std::string>& paren
 	{
 		meta << "parent: " << joinedParents << "\n";
 		meta << "message: " << message << "\n";
-		meta << "timestamp: (½Ã°£ ÆÄ½Ì ½ÇÆÐ)\n";
+		meta << "timestamp: (ì‹œê°„ íŒŒì‹± ì‹¤íŒ¨)\n";
 	}
 	else
 	{

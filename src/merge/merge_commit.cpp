@@ -23,24 +23,24 @@ void mergeCommitFromState(const std::string& currentHash, const std::string& tar
 	{
 		for (auto& [filename, hash] : conflicts) conflictFiles.insert(filename);
 
-		// Ãæµ¹ ÆÄÀÏÀÌ ¾ÆÁ÷ ±×´ë·Î ÀÖ´Ù¸é °æ°í
+		// ì¶©ëŒ íŒŒì¼ì´ ì•„ì§ ê·¸ëŒ€ë¡œ ìˆë‹¤ë©´ ê²½ê³ 
 		for (const auto& [file, _] : conflicts)
 		{
 			std::ifstream f(file);
 			std::string content((std::istreambuf_iterator<char>(f)), {});
 			if (content.find("<<<<<") != std::string::npos)
 			{
-				std::cerr << "[¿À·ù] ¾ÆÁ÷ Ãæµ¹ ÆÄÀÏÀÌ ÇØ°áµÇÁö ¾Ê¾Ò½À´Ï´Ù: " << file << "\n";
+				std::cerr << "[ì˜¤ë¥˜] ì•„ì§ ì¶©ëŒ íŒŒì¼ì´ í•´ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤: " << file << "\n";
 				return;
 			}
 		}
 	}
 
-	// ÀÚµ¿º´ÇÕ ÆÄÀÏ Ã³¸®
+	// ìë™ë³‘í•© íŒŒì¼ ì²˜ë¦¬
 	applyAutoMergeFiles(currentHash, targetHash, conflictFiles);
 	updateIndexAfterAutoMerge(currentHash, targetHash, conflictFiles);
 
-	// Ãæµ¹ÀÌ ÇØ°áµÇ¾úÀ» °æ¿ì index ÆÄÀÏ ¾÷µ¥ÀÌÆ®
+	// ì¶©ëŒì´ í•´ê²°ë˜ì—ˆì„ ê²½ìš° index íŒŒì¼ ì—…ë°ì´íŠ¸
 	if (!conflicts.empty())
 	{
 		std::string outputPath = ".minigit\\index";
@@ -48,7 +48,7 @@ void mergeCommitFromState(const std::string& currentHash, const std::string& tar
 
 		if (!out.is_open())
 		{
-			std::cerr << "[¿À·ù] index ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù: " << outputPath << "\n";
+			std::cerr << "[ì˜¤ë¥˜] index íŒŒì¼ì„ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " << outputPath << "\n";
 			return;
 		}
 
@@ -61,7 +61,7 @@ void mergeCommitFromState(const std::string& currentHash, const std::string& tar
 		}
 	}
 
-	// index snapshot È®º¸
+	// index snapshot í™•ë³´
 	std::string snapshot = readIndexSnapshot();
 	std::vector<std::string> snapshotLines = splitLines(snapshot);
 	std::string commitHash = improvedHash(snapshotLines);
@@ -69,21 +69,21 @@ void mergeCommitFromState(const std::string& currentHash, const std::string& tar
 
 	if (!createCommitDirectory(commitHash))
 	{
-		std::cerr << "Ä¿¹Ô µğ·ºÅä¸® »ı¼º ½ÇÆĞ\n";
+		std::cerr << "ì»¤ë°‹ ë””ë ‰í† ë¦¬ ìƒì„± ì‹¤íŒ¨\n";
 		return;
 	}
 
-	// index º¹»ç
+	// index ë³µì‚¬
 	std::ofstream destIndex(commitPath + "\\index");
 	if (!destIndex.is_open())
 	{
-		std::cerr << "index º¹»ç ½ÇÆĞ\n";
+		std::cerr << "index ë³µì‚¬ ì‹¤íŒ¨\n";
 		return;
 	}
 	destIndex << snapshot;
 	destIndex.close();
 
-	// ÆÄÀÏ º¹»ç
+	// íŒŒì¼ ë³µì‚¬
 	for (const auto& line : snapshotLines)
 	{
 		auto delim = line.find(":");
@@ -93,16 +93,16 @@ void mergeCommitFromState(const std::string& currentHash, const std::string& tar
 		copyFileToCommit(filename, commitPath);
 	}
 
-	// ¸ŞÅ¸ ÀÛ¼º
+	// ë©”íƒ€ ì‘ì„±
 	writeMeta(commitPath, { currentHash, targetHash }, message);
 
-	// HEAD ºê·£Ä¡ ¾÷µ¥ÀÌÆ®
+	// HEAD ë¸Œëœì¹˜ ì—…ë°ì´íŠ¸
 	updateBranchHead(commitHash);
 
-	// index ÃÊ±âÈ­
+	// index ì´ˆê¸°í™”
 	std::ofstream clearIndex(".minigit\\index", std::ios::trunc);
 	if (!clearIndex.is_open())
-		std::cerr << "index ÃÊ±âÈ­ ½ÇÆĞ\n";
+		std::cerr << "index ì´ˆê¸°í™” ì‹¤íŒ¨\n";
 
-	std::cout << "º´ÇÕ Ä¿¹ÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.\n";
+	std::cout << "ë³‘í•© ì»¤ë°‹ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\n";
 }

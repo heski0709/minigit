@@ -17,21 +17,21 @@
 
 int main(int argc, char* argv[])
 {
-	// ¸í·É¾î ÆÄ½Ì
+	// ëª…ë ¹ì–´ íŒŒì‹±
 	if (argc < 2)
 	{
-		std::cout << R"(»ç¿ë¹ı
-init: minigit¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.
-add <filename>: ÆÄÀÏÀ» ½ºÅ×ÀÌÂ¡ÇÕ´Ï´Ù.
-commit <message>: Ä¿¹Ô ¸Ş¼¼Áö ÀÛ¼º
-log [--online]: Ä¿¹Ô ±â·ÏÀ» Ãâ·ÂÇÕ´Ï´Ù.
-checkout <branch_name | commit_hash>: ÇØ´ç ºê·£Ä¡ ¶Ç´Â Ä¿¹Ô ±âÁØÀ¸·Î ÆÄÀÏÀ» º¹¿øÇÕ´Ï´Ù.
-branch [name]: ºê·£Ä¡ ¸®½ºÆ® Ãâ·Â, ºê·£Ä¡ »ı¼º
-status: ÇöÀç ºê·£Ä¡ÀÇ »óÅÂ¸¦ Ãâ·ÂÇÕ´Ï´Ù.
-merge <branch>: ÇØ´ç ºê·£Ä¡¿Í º´ÇÕÇÕ´Ï´Ù. Ãæµ¹ÀÌ ¹ß»ıÇÒ °æ¿ì ¾Æ·¡ ¸í·É¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.
+		std::cout << R"(ì‚¬ìš©ë²•
+init: minigitë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+add <filename>: íŒŒì¼ì„ ìŠ¤í…Œì´ì§•í•©ë‹ˆë‹¤.
+commit <message>: ì»¤ë°‹ ë©”ì„¸ì§€ ì‘ì„±
+log [--online]: ì»¤ë°‹ ê¸°ë¡ì„ ì¶œë ¥í•©ë‹ˆë‹¤.
+checkout <branch_name | commit_hash>: í•´ë‹¹ ë¸Œëœì¹˜ ë˜ëŠ” ì»¤ë°‹ ê¸°ì¤€ìœ¼ë¡œ íŒŒì¼ì„ ë³µì›í•©ë‹ˆë‹¤.
+branch [name]: ë¸Œëœì¹˜ ë¦¬ìŠ¤íŠ¸ ì¶œë ¥, ë¸Œëœì¹˜ ìƒì„±
+status: í˜„ì¬ ë¸Œëœì¹˜ì˜ ìƒíƒœë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
+merge <branch>: í•´ë‹¹ ë¸Œëœì¹˜ì™€ ë³‘í•©í•©ë‹ˆë‹¤. ì¶©ëŒì´ ë°œìƒí•  ê²½ìš° ì•„ë˜ ëª…ë ¹ì–´ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.
 merge [--abort | --continue]:
-	--abort		º´ÇÕÇÏ±â ÀüÀ¸·Î µÇµ¹¸³´Ï´Ù.
-	--continue	Ãæµ¹ÀÌ ¹ß»ıÇÑ ÈÄ, º´ÇÕÀ» ÁøÇàÇÕ´Ï´Ù.  
+	--abort		ë³‘í•©í•˜ê¸° ì „ìœ¼ë¡œ ë˜ëŒë¦½ë‹ˆë‹¤.
+	--continue	ì¶©ëŒì´ ë°œìƒí•œ í›„, ë³‘í•©ì„ ì§„í–‰í•©ë‹ˆë‹¤.  
 )";
 		return 0;
 	}
@@ -46,7 +46,7 @@ merge [--abort | --continue]:
 	{
 		if (argc < 3)
 		{
-			std::cerr << "add ¸í·É¿¡´Â ÆÄÀÏ¸íÀÌ ÇÊ¿äÇÕ´Ï´Ù.\n";
+			std::cerr << "add ëª…ë ¹ì—ëŠ” íŒŒì¼ëª…ì´ í•„ìš”í•©ë‹ˆë‹¤.\n";
 			return 1;
 		}
 		add(argv[2]);
@@ -55,11 +55,11 @@ merge [--abort | --continue]:
 	{
 		if (argc < 3)
 		{
-			std::cerr << "commit ¸í·É¿¡´Â ¸Ş½ÃÁö°¡ ÇÊ¿äÇÕ´Ï´Ù.\n";
+			std::cerr << "commit ëª…ë ¹ì—ëŠ” ë©”ì‹œì§€ê°€ í•„ìš”í•©ë‹ˆë‹¤.\n";
 			return 1;
 		}
 
-		// ¸Ş¼¼Áö¸¦ µû¿ÈÇ¥·Î ¹­Áö ¾Ê¾Æµµ ¿©·¯ ´Ü¾î ¸Ş¼¼Áö¸¦ ¹ŞÀ» ¼ö ÀÖµµ·Ï
+		// ë©”ì„¸ì§€ë¥¼ ë”°ì˜´í‘œë¡œ ë¬¶ì§€ ì•Šì•„ë„ ì—¬ëŸ¬ ë‹¨ì–´ ë©”ì„¸ì§€ë¥¼ ë°›ì„ ìˆ˜ ìˆë„ë¡
 		std::string msg;
 		for (int i = 2; i < argc; ++i)
 		{
@@ -81,7 +81,7 @@ merge [--abort | --continue]:
 	{
 		if (argc < 3)
 		{
-			std::cerr << "»ç¿ë¹ı: minigit checkout <commit_hash | branch_name>\n";
+			std::cerr << "ì‚¬ìš©ë²•: minigit checkout <commit_hash | branch_name>\n";
 			return 1;
 		}
 
@@ -93,7 +93,7 @@ merge [--abort | --continue]:
 		else if (refType == "commit")
 			checkoutCommit(input);
 		else
-			std::cerr << "¿¡·¯: '" << input << "'Àº(´Â) À¯È¿ÇÑ ºê·£Ä¡, Ä¿¹ÔÇØ½Ã°¡ ¾Æ´Õ´Ï´Ù.\n";
+			std::cerr << "ì—ëŸ¬: '" << input << "'ì€(ëŠ”) ìœ íš¨í•œ ë¸Œëœì¹˜, ì»¤ë°‹í•´ì‹œê°€ ì•„ë‹™ë‹ˆë‹¤.\n";
 	}
 	else if (command == "branch")
 	{
@@ -107,10 +107,10 @@ merge [--abort | --continue]:
 	{
 		if (argc < 3)
 		{
-			std::cerr << R"(»ç¿ë¹ı:
-minigit merge <branch>: º´ÇÕ ½Ãµµ
-minigit merge --abort: º´ÇÕ Áß´Ü
-minigit merge --continue: º´ÇÕ ¿Ï·á
+			std::cerr << R"(ì‚¬ìš©ë²•:
+minigit merge <branch>: ë³‘í•© ì‹œë„
+minigit merge --abort: ë³‘í•© ì¤‘ë‹¨
+minigit merge --continue: ë³‘í•© ì™„ë£Œ
 )";
 			return 1;
 		}
@@ -121,18 +121,18 @@ minigit merge --continue: º´ÇÕ ¿Ï·á
 		{
 			if (!isMergeInProgress())
 			{
-				std::cerr << "[¿À·ù] ÇöÀç º´ÇÕ ÁßÀÌ ¾Æ´Õ´Ï´Ù.\n";
+				std::cerr << "[ì˜¤ë¥˜] í˜„ì¬ ë³‘í•© ì¤‘ì´ ì•„ë‹™ë‹ˆë‹¤.\n";
 				return 1;
 			}
 
 			auto [current, _] = loadMergeState();
 			if (current.empty())
 			{
-				std::cerr << "[¿À·ù] º´ÇÕ »óÅÂ¸¦ º¹¿øÇÒ ¼ö ¾ø½À´Ï´Ù.\n";
+				std::cerr << "[ì˜¤ë¥˜] ë³‘í•© ìƒíƒœë¥¼ ë³µì›í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n";
 				return 1;
 			}
 
-			std::cout << "º´ÇÕ Áß´Ü: ÀÌÀü Ä¿¹Ô »óÅÂ·Î µÇµ¹¸³´Ï´Ù.\n";
+			std::cout << "ë³‘í•© ì¤‘ë‹¨: ì´ì „ ì»¤ë°‹ ìƒíƒœë¡œ ë˜ëŒë¦½ë‹ˆë‹¤.\n";
 			restoreFilesFromBackup();
 			updateBranchHead(current);
 			clearMergeState();
@@ -142,18 +142,18 @@ minigit merge --continue: º´ÇÕ ¿Ï·á
 		{
 			if (!isMergeInProgress())
 			{
-				std::cerr << "[¿À·ù] º´ÇÕ ÁßÀÌ ¾Æ´Õ´Ï´Ù.\n";
+				std::cerr << "[ì˜¤ë¥˜] ë³‘í•© ì¤‘ì´ ì•„ë‹™ë‹ˆë‹¤.\n";
 				return 1;
 			}
 
 			auto [current, target] = loadMergeState();
 			if (current.empty() || target.empty())
 			{
-				std::cerr << "[¿À·ù] º´ÇÕ »óÅÂ Á¤º¸°¡ ºÒ¿ÏÀüÇÕ´Ï´Ù.\n";
+				std::cerr << "[ì˜¤ë¥˜] ë³‘í•© ìƒíƒœ ì •ë³´ê°€ ë¶ˆì™„ì „í•©ë‹ˆë‹¤.\n";
 				return 1;
 			}
 
-			std::cout << "º´ÇÕ Ä¿¹ÔÀ» »ı¼ºÇÕ´Ï´Ù...\n";
+			std::cout << "ë³‘í•© ì»¤ë°‹ì„ ìƒì„±í•©ë‹ˆë‹¤...\n";
 			mergeCommitFromState(current, target, "Merge continue");
 			clearMergeState();
 			clearMergeConflicts();
@@ -166,7 +166,7 @@ minigit merge --continue: º´ÇÕ ¿Ï·á
 	}
 	else
 	{
-		std::cerr << "¾Ë ¼ö ¾ø´Â ¸í·É¾îÀÔ´Ï´Ù: " << command << "\n";
+		std::cerr << "ì•Œ ìˆ˜ ì—†ëŠ” ëª…ë ¹ì–´ì…ë‹ˆë‹¤: " << command << "\n";
 	}
 
 	return 0;

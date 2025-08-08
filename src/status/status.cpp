@@ -18,12 +18,12 @@ std::string computeFileHash(const std::string& path)
 }
 
 /**
-* @brief ÇöÀç ÀÛ¾÷ µğ·ºÅä¸® ±âÁØÀ¸·Î »óÅÂ¸¦ Ãâ·Â
+* @brief í˜„ì¬ ì‘ì—… ë””ë ‰í† ë¦¬ ê¸°ì¤€ìœ¼ë¡œ ìƒíƒœë¥¼ ì¶œë ¥
 */
 void showStatus()
 {
 	std::string branch = getCurrentBranchName();
-	std::cout << "ÇöÀç ºê·£Ä¡: " << branch << "\n\n";
+	std::cout << "í˜„ì¬ ë¸Œëœì¹˜: " << branch << "\n\n";
 
 	auto indexMap = loadIndex();
 	auto commitMap = loadLastCommitIndex();
@@ -32,11 +32,11 @@ void showStatus()
 	std::unordered_set<std::string> staged;
 	std::unordered_set<std::string> untracked;
 
-	// ½ºÅ×ÀÌÂ¡µÈ ÆÄÀÏ (index¿¡ ±â·ÏµÇ¾î ÀÖ´Â ÆÄÀÏ)
+	// ìŠ¤í…Œì´ì§•ëœ íŒŒì¼ (indexì— ê¸°ë¡ë˜ì–´ ìˆëŠ” íŒŒì¼)
 	for (const auto& [file, hash] : indexMap)
 		staged.insert(file);
 
-	// ¼öÁ¤µÈ ÆÄÀÏ È®ÀÎ
+	// ìˆ˜ì •ëœ íŒŒì¼ í™•ì¸
 	for (const auto& [file, stagedHash] : indexMap)
 	{
 		if (!fs::exists(file)) continue;
@@ -46,23 +46,23 @@ void showStatus()
 			modified.insert(file);
 	}
 
-	// ÀüÃ¼ ÆÄÀÏ ¸ñ·Ï Á¶È¸
+	// ì „ì²´ íŒŒì¼ ëª©ë¡ ì¡°íšŒ
 	for (const auto& entry : fs::directory_iterator("."))
 	{
 		std::string filename = entry.path().filename().string();
-		// .minigit ³»ºÎ ¹«½Ã
+		// .minigit ë‚´ë¶€ ë¬´ì‹œ
 		if (filename == ".minigit") continue;
 
-		// ÀÌ¹Ì index³ª commit¿¡ ÀÖÀ¸¸é ¹«½Ã
+		// ì´ë¯¸ indexë‚˜ commitì— ìˆìœ¼ë©´ ë¬´ì‹œ
 		if (indexMap.count(filename) || commitMap.count(filename)) continue;
 
 		untracked.insert(filename);
 	}
 
-	// Ãâ·Â
+	// ì¶œë ¥
 	if (!staged.empty())
 	{
-		std::cout << "½ºÅ×ÀÌÂ¡µÈ ÆÄÀÏ:\n";
+		std::cout << "ìŠ¤í…Œì´ì§•ëœ íŒŒì¼:\n";
 		for (const auto& file : staged)
 			std::cout << "	" << file << "\n";
 		std::cout << "\n";
@@ -70,7 +70,7 @@ void showStatus()
 
 	if (!modified.empty())
 	{
-		std::cout << "¼öÁ¤µÈ ÆÄÀÏ:\n";
+		std::cout << "ìˆ˜ì •ëœ íŒŒì¼:\n";
 		for (const auto& file : modified)
 			std::cout << "	" << file << "\n";
 		std::cout << "\n";
@@ -78,7 +78,7 @@ void showStatus()
 
 	if (!untracked.empty())
 	{
-		std::cout << "ÃßÀûµÇÁö ¾ÊÀº ÆÄÀÏ:\n";
+		std::cout << "ì¶”ì ë˜ì§€ ì•Šì€ íŒŒì¼:\n";
 		for (const auto& file : untracked)
 			std::cout << "	" << file << "\n";
 		std::cout << "\n";

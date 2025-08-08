@@ -4,27 +4,27 @@
 #include <unordered_map>
 
 /**
-* @brief µÎ Ä¿¹ÔÀÇ idnex ÆÄÀÏÀ» ºñ±³ÇÏ¿© Ãæµ¹ ÆÄÀÏÀ» ¹İÈ¯
+* @brief ë‘ ì»¤ë°‹ì˜ idnex íŒŒì¼ì„ ë¹„êµí•˜ì—¬ ì¶©ëŒ íŒŒì¼ì„ ë°˜í™˜
 *
-* @param currentHash ÇöÀç ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
-* @param targetHash º´ÇÕ ´ë»ó ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
-* @return std::vector<std::string> Ãæµ¹ÀÌ ¹ß»ıÇÑ ÆÄÀÏ ÀÌ¸§ ¸ñ·Ï
+* @param currentHash í˜„ì¬ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
+* @param targetHash ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
+* @return std::vector<std::string> ì¶©ëŒì´ ë°œìƒí•œ íŒŒì¼ ì´ë¦„ ëª©ë¡
 */
 std::vector<std::string> detectConflicts(
 	const std::string& currentHash,
 	const std::string& targetHash);
 
 /**
- * @brief Ãæµ¹ ³»¿ëÀ» ¸¶Ä¿ Çü½ÄÀ¸·Î °¨½Î ¹®ÀÚ¿­·Î ¹İÈ¯ÇÕ´Ï´Ù.
+ * @brief ì¶©ëŒ ë‚´ìš©ì„ ë§ˆì»¤ í˜•ì‹ìœ¼ë¡œ ê°ì‹¸ ë¬¸ìì—´ë¡œ ë°˜í™˜í•©ë‹ˆë‹¤.
  *
- * @param currentContent ÇöÀç ºê·£Ä¡ÀÇ ÆÄÀÏ ³»¿ë
- * @param targetContent º´ÇÕ ´ë»ó ºê·£Ä¡ÀÇ ÆÄÀÏ ³»¿ë
- * @param currentLabel ¸¶Ä¿ÀÇ ÇöÀç ºê·£Ä¡ ¶óº§ (±âº»°ª: "HEAD")
- * @param targetLabel ¸¶Ä¿ÀÇ º´ÇÕ ´ë»ó ¶óº§ (±âº»°ª: "MERGE")
- * @return Ãæµ¹ ¸¶Ä¿°¡ »ğÀÔµÈ ÃÖÁ¾ ¹®ÀÚ¿­
+ * @param currentContent í˜„ì¬ ë¸Œëœì¹˜ì˜ íŒŒì¼ ë‚´ìš©
+ * @param targetContent ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì˜ íŒŒì¼ ë‚´ìš©
+ * @param currentLabel ë§ˆì»¤ì˜ í˜„ì¬ ë¸Œëœì¹˜ ë¼ë²¨ (ê¸°ë³¸ê°’: "HEAD")
+ * @param targetLabel ë§ˆì»¤ì˜ ë³‘í•© ëŒ€ìƒ ë¼ë²¨ (ê¸°ë³¸ê°’: "MERGE")
+ * @return ì¶©ëŒ ë§ˆì»¤ê°€ ì‚½ì…ëœ ìµœì¢… ë¬¸ìì—´
  *
  * @details
- * ¾Æ·¡¿Í °°Àº Çü½ÄÀ¸·Î °á°ú°¡ »ı¼ºµË´Ï´Ù:
+ * ì•„ë˜ì™€ ê°™ì€ í˜•ì‹ìœ¼ë¡œ ê²°ê³¼ê°€ ìƒì„±ë©ë‹ˆë‹¤:
  * @code
  * <<<<<<< HEAD
  * (currentContent)
@@ -41,17 +41,17 @@ std::string generateConflictMarkedContent(
 );
 
 /**
- * @brief Ãæµ¹ ³»¿ëÀ» ÆÄÀÏ¿¡ ±â·ÏÇÏ¸ç, conflict ¸¶Ä¿¸¦ »ğÀÔÇÕ´Ï´Ù.
+ * @brief ì¶©ëŒ ë‚´ìš©ì„ íŒŒì¼ì— ê¸°ë¡í•˜ë©°, conflict ë§ˆì»¤ë¥¼ ì‚½ì…í•©ë‹ˆë‹¤.
  *
- * @param filename Ãæµ¹ ³»¿ëÀ» ±â·ÏÇÒ ÆÄÀÏ °æ·Î
- * @param currentContent ÇöÀç ºê·£Ä¡ÀÇ ÆÄÀÏ ³»¿ë
- * @param targetContent º´ÇÕ ´ë»ó ºê·£Ä¡ÀÇ ÆÄÀÏ ³»¿ë
- * @param currentLabel ¸¶Ä¿ÀÇ ÇöÀç ºê·£Ä¡ ¶óº§ (±âº»°ª: "HEAD")
- * @param targetLabel ¸¶Ä¿ÀÇ º´ÇÕ ´ë»ó ¶óº§ (±âº»°ª: "MERGE")
+ * @param filename ì¶©ëŒ ë‚´ìš©ì„ ê¸°ë¡í•  íŒŒì¼ ê²½ë¡œ
+ * @param currentContent í˜„ì¬ ë¸Œëœì¹˜ì˜ íŒŒì¼ ë‚´ìš©
+ * @param targetContent ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì˜ íŒŒì¼ ë‚´ìš©
+ * @param currentLabel ë§ˆì»¤ì˜ í˜„ì¬ ë¸Œëœì¹˜ ë¼ë²¨ (ê¸°ë³¸ê°’: "HEAD")
+ * @param targetLabel ë§ˆì»¤ì˜ ë³‘í•© ëŒ€ìƒ ë¼ë²¨ (ê¸°ë³¸ê°’: "MERGE")
  *
  * @details
- * ³»ºÎÀûÀ¸·Î generateConflictMarkedContent()¸¦ »ç¿ëÇÏ¿© ¸¶Ä¿¸¦ »ı¼ºÇÑ µÚ,
- * ÆÄÀÏ¿¡ µ¤¾î¾¹´Ï´Ù. ÆÄÀÏÀÌ ¿­¸®Áö ¾ÊÀ» °æ¿ì ¿¡·¯ ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÕ´Ï´Ù.
+ * ë‚´ë¶€ì ìœ¼ë¡œ generateConflictMarkedContent()ë¥¼ ì‚¬ìš©í•˜ì—¬ ë§ˆì»¤ë¥¼ ìƒì„±í•œ ë’¤,
+ * íŒŒì¼ì— ë®ì–´ì”ë‹ˆë‹¤. íŒŒì¼ì´ ì—´ë¦¬ì§€ ì•Šì„ ê²½ìš° ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
  */
 void markConflict(
     const std::string& filename,

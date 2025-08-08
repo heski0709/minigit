@@ -3,24 +3,24 @@
 #include <unordered_set>
 
 /**
-* @brief ÁÖ¾îÁø Ä¿¹ÔÀÌ ´Ù¸¥ Ä¿¹ÔÀÇ Á¶»ó(ancestor)ÀÎÁö È®ÀÎ
+* @brief ì£¼ì–´ì§„ ì»¤ë°‹ì´ ë‹¤ë¥¸ ì»¤ë°‹ì˜ ì¡°ìƒ(ancestor)ì¸ì§€ í™•ì¸
 *
-* @param ancestor Á¶»óÀÎÁö È®ÀÎÇÒ Ä¿¹Ô ÇØ½Ã
-* @paran descendant Å½»öÇÒ ´ë»ó Ä¿¹Ô ÇØ½Ã
-* @return true descendant°¡ ancestorÀÇ ÀÚ¼ÕÀÏ °æ¿ì
-* @return false ancestor¿Í °ü·Ã ¾ø´Â °æ¿ì (¶Ç´Â °æ·Î ¾øÀ½)
+* @param ancestor ì¡°ìƒì¸ì§€ í™•ì¸í•  ì»¤ë°‹ í•´ì‹œ
+* @paran descendant íƒìƒ‰í•  ëŒ€ìƒ ì»¤ë°‹ í•´ì‹œ
+* @return true descendantê°€ ancestorì˜ ìì†ì¼ ê²½ìš°
+* @return false ancestorì™€ ê´€ë ¨ ì—†ëŠ” ê²½ìš° (ë˜ëŠ” ê²½ë¡œ ì—†ìŒ)
 */
 bool isAncestor(const std::string& ancestor, const std::string& descendant);
 
 
 /**
- * @brief Æ¯Á¤ Ä¿¹ÔÀÇ ¸ğµç Á¶»óµéÀ» Å½»öÇÏ¿© ÁıÇÕÀ¸·Î ¹İÈ¯
+ * @brief íŠ¹ì • ì»¤ë°‹ì˜ ëª¨ë“  ì¡°ìƒë“¤ì„ íƒìƒ‰í•˜ì—¬ ì§‘í•©ìœ¼ë¡œ ë°˜í™˜
  *
- * @param startHash Á¶»óÀ» Å½»öÇÒ Ä¿¹Ô ÇØ½Ã
+ * @param startHash ì¡°ìƒì„ íƒìƒ‰í•  ì»¤ë°‹ í•´ì‹œ
  */
 std::unordered_set<std::string> collectAncestors(const std::string& startHash);
 
 /**
- * @brief µÎ Ä¿¹ÔÀÇ °øÅë Á¶»óÀ» Ã£À½ (°¡Àå °¡±î¿î Á¶»ó)
+ * @brief ë‘ ì»¤ë°‹ì˜ ê³µí†µ ì¡°ìƒì„ ì°¾ìŒ (ê°€ì¥ ê°€ê¹Œìš´ ì¡°ìƒ)
  */
 std::string findCommonAncestor(const std::string& hashA, const std::string& hashB);

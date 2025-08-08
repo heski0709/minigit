@@ -3,42 +3,42 @@
 #include <vector>
 
 /**
-* @brief merge Áß »óÅÂ¸¦ ±â·Ï (Ãæµ¹ ¹ß»ı ½Ã)
+* @brief merge ì¤‘ ìƒíƒœë¥¼ ê¸°ë¡ (ì¶©ëŒ ë°œìƒ ì‹œ)
 * 
-* @param currentHash ÇöÀç ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
-* @param targetHash º´ÇÕ ´ë»ó ºê·£Ä¡ÀÇ Ä¿¹Ô ÇØ½Ã
+* @param currentHash í˜„ì¬ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
+* @param targetHash ë³‘í•© ëŒ€ìƒ ë¸Œëœì¹˜ì˜ ì»¤ë°‹ í•´ì‹œ
 */
 void saveMergeState(const std::string& currentHash, const std::string& targetHash);
 
 /**
-* @brief merge »óÅÂ¸¦ ºÒ·¯¿Í currentHash, targetHash·Î ¹İÈ¯
+* @brief merge ìƒíƒœë¥¼ ë¶ˆëŸ¬ì™€ currentHash, targetHashë¡œ ë°˜í™˜
 */
 std::pair<std::string, std::string> loadMergeState();
 
 /**
-* @brief MERGE_STATE ÆÄÀÏ »èÁ¦ (abort ¶Ç´Â ¿Ï·á ½Ã)
+* @brief MERGE_STATE íŒŒì¼ ì‚­ì œ (abort ë˜ëŠ” ì™„ë£Œ ì‹œ)
 */
 void clearMergeState();
 
 
 /**
-* @brief conflict ¹ß»ı ½Ã ÇöÀç ºê·£Ä¡ÀÇ ÆÄÀÏ ¹é¾÷
+* @brief conflict ë°œìƒ ì‹œ í˜„ì¬ ë¸Œëœì¹˜ì˜ íŒŒì¼ ë°±ì—…
 */
 void backupCurrentFilesBeforeMerge(const std::string& currentHash);
 
 /**
-* @brief merge --abort ½ÇÇà ½Ã ¹é¾÷ÇØ³õÀº ÆÄÀÏ º¹¿ø
+* @brief merge --abort ì‹¤í–‰ ì‹œ ë°±ì—…í•´ë†“ì€ íŒŒì¼ ë³µì›
 */
 void restoreFilesFromBackup();
 
 /**
-* @brief .minigit/_merge_backup/ Æú´õ »èÁ¦
+* @brief .minigit/_merge_backup/ í´ë” ì‚­ì œ
 */
 void clearBackup();
 
 /**
-* @brief merge Áß Ãæµ¹ÀÌ ¹ß»ıÇÑ ÆÄÀÏ ÀúÀå
+* @brief merge ì¤‘ ì¶©ëŒì´ ë°œìƒí•œ íŒŒì¼ ì €ì¥
 *
-* @param conflicts Ãæµ¹ÇÑ ÆÄÀÏ¸ñ·Ï
+* @param conflicts ì¶©ëŒí•œ íŒŒì¼ëª©ë¡
 */
 void saveMergeConflicts(const std::vector<std::string>& conflicts);

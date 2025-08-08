@@ -8,10 +8,10 @@
 namespace fs = std::filesystem;
 
 /**
-* @brief Ä¿¹Ô µğ·ºÅä¸® ³»ÀÇ ÆÄÀÏÀ» ÇöÀç ÀÛ¾÷ µğ·ºÅä¸®·Î º¹¿ø
-* @param srcDir Ä¿¹Ô µğ·ºÅä¸® °æ·Î
-* @param filename º¹¿ø ÆÄÀÏ
-* @return ¼º°ø ¿©ºÎ
+* @brief ì»¤ë°‹ ë””ë ‰í† ë¦¬ ë‚´ì˜ íŒŒì¼ì„ í˜„ì¬ ì‘ì—… ë””ë ‰í† ë¦¬ë¡œ ë³µì›
+* @param srcDir ì»¤ë°‹ ë””ë ‰í† ë¦¬ ê²½ë¡œ
+* @param filename ë³µì› íŒŒì¼
+* @return ì„±ê³µ ì—¬ë¶€
 */
 bool restoreFile(const std::string& srcDir, const std::string& filename)
 {
@@ -20,7 +20,7 @@ bool restoreFile(const std::string& srcDir, const std::string& filename)
 
 	try
 	{
-		// º¹¿øÇÒ °æ·ÎÀÇ »óÀ§ µğ·ºÅä¸® »ı¼º
+		// ë³µì›í•  ê²½ë¡œì˜ ìƒìœ„ ë””ë ‰í† ë¦¬ ìƒì„±
 		fs::path parentPath = dst.parent_path();
 
 		if (!parentPath.empty())
@@ -29,14 +29,14 @@ bool restoreFile(const std::string& srcDir, const std::string& filename)
 		std::ifstream in(src, std::ios::binary);
 		if (!in.is_open())
 		{
-			std::cerr << "[º¹¿ø ½ÇÆĞ] ¿øº» ÆÄÀÏ ¿­±â ½ÇÆĞ: " << src << "\n";
+			std::cerr << "[ë³µì› ì‹¤íŒ¨] ì›ë³¸ íŒŒì¼ ì—´ê¸° ì‹¤íŒ¨: " << src << "\n";
 			return false;
 		}
 
 		std::ofstream out(dst, std::ios::binary);
 		if (!out.is_open())
 		{
-			std::cerr << "[º¹¿ø ½ÇÆĞ] ¿øº» ÆÄÀÏ ¿­±â ½ÇÆĞ: " << dst << "\n";
+			std::cerr << "[ë³µì› ì‹¤íŒ¨] ì›ë³¸ íŒŒì¼ ì—´ê¸° ì‹¤íŒ¨: " << dst << "\n";
 			return false;
 		}
 
@@ -44,14 +44,14 @@ bool restoreFile(const std::string& srcDir, const std::string& filename)
 
 		if (out.fail())
 		{
-			std::cerr << "[º¹¿ø ½ÇÆĞ] º¹»ç Áß ¿À·ù ¹ß»ı: " << dst << "\n";
+			std::cerr << "[ë³µì› ì‹¤íŒ¨] ë³µì‚¬ ì¤‘ ì˜¤ë¥˜ ë°œìƒ: " << dst << "\n";
 			return false;
 		}
 		return true;
 	}
 	catch (const std::exception& e)
 	{
-		std::cerr << "[º¹¿ø ¿¹¿Ü] " << filename << ": " << e.what() << "\n";
+		std::cerr << "[ë³µì› ì˜ˆì™¸] " << filename << ": " << e.what() << "\n";
 		return false;
 	}
 }

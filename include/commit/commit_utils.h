@@ -3,28 +3,28 @@
 #include <vector>
 
 /**
-* @brief Ä¿¹Ô µğ·ºÅä¸® »ı¼º
-* @param hash Ä¿¹Ô ÇØ½ÃÄÚµå
+* @brief ì»¤ë°‹ ë””ë ‰í† ë¦¬ ìƒì„±
+* @param hash ì»¤ë°‹ í•´ì‹œì½”ë“œ
 */
 bool createCommitDirectory(const std::string& hash);
 
 /**
-* @brief Ä¿¹Ô µğ·ºÅä¸®·Î ÆÄÀÏ º¹»ç
-* @param src ¿øº»ÆÄÀÏ
-* @param destDir º¹»ç ÆÄÀÏÀ» ÀúÀåÇÒ Ä¿¹Ô µğ·ºÅä¸®
+* @brief ì»¤ë°‹ ë””ë ‰í† ë¦¬ë¡œ íŒŒì¼ ë³µì‚¬
+* @param src ì›ë³¸íŒŒì¼
+* @param destDir ë³µì‚¬ íŒŒì¼ì„ ì €ì¥í•  ì»¤ë°‹ ë””ë ‰í† ë¦¬
 */
 bool copyFileToCommit(const std::string& src, const std::string& destDir);
 
 /**
-* @brief Ä¿¹Ô ¸Ş½ÃÁö¿Í ½Ã°£À» ±â·ÏÇÏ´Â ÇÔ¼ö
-* @param destDir Ä¿¹Ô µğ·ºÅä¸®
-* @param message Ä¿¹ÔµÈ ¸Ş¼¼Áö
+* @brief ì»¤ë°‹ ë©”ì‹œì§€ì™€ ì‹œê°„ì„ ê¸°ë¡í•˜ëŠ” í•¨ìˆ˜
+* @param destDir ì»¤ë°‹ ë””ë ‰í† ë¦¬
+* @param message ì»¤ë°‹ëœ ë©”ì„¸ì§€
 */
 void writeMeta(const std::string& destDir, const std::vector<std::string>& parentHashes, const std::string& message);
 
 /**
- * @brief ÀÔ·Â°ªÀÌ ºê·£Ä¡¸í, ÅÂ±×, Ä¿¹ÔÇØ½Ã Áß ¾î¶² °ÍÀÎÁö ÆÇº°
- * @param ref »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ·¹ÆÛ·±½º ¹®ÀÚ¿­
- * @return ºê·£Ä¡¶ó¸é "branch", ÇØ½Ã¶ó¸é "commit", ÅÂ±×¶ó¸é "tag", ¾Æ´Ï¸é "invalid"
+ * @brief ì…ë ¥ê°’ì´ ë¸Œëœì¹˜ëª…, íƒœê·¸, ì»¤ë°‹í•´ì‹œ ì¤‘ ì–´ë–¤ ê²ƒì¸ì§€ íŒë³„
+ * @param ref ì‚¬ìš©ìê°€ ì…ë ¥í•œ ë ˆí¼ëŸ°ìŠ¤ ë¬¸ìì—´
+ * @return ë¸Œëœì¹˜ë¼ë©´ "branch", í•´ì‹œë¼ë©´ "commit", íƒœê·¸ë¼ë©´ "tag", ì•„ë‹ˆë©´ "invalid"
  */
 std::string resolveReferenceType(const std::string& ref);

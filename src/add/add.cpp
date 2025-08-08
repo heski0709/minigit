@@ -14,7 +14,7 @@ bool isAlreadyStaged(const std::string& hash)
 	{
 		if (line.find(hash) != std::string::npos)
 		{
-			return true; // ÀÌ¹Ì Á¸Àç
+			return true; // ì´ë¯¸ ì¡´ì¬
 		}
 	}
 
@@ -24,10 +24,10 @@ bool isAlreadyStaged(const std::string& hash)
 
 void add(const std::string& filename)
 {
-	// ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+	// íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
 	if (!fileExists(filename))
 	{
-		std::cerr << "ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù : " << filename << "\n";
+		std::cerr << "íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤ : " << filename << "\n";
 		return;
 	}
 
@@ -36,21 +36,21 @@ void add(const std::string& filename)
 
 	if (isAlreadyStaged(hash))
 	{
-		std::cout << "ÀÌ¹Ì ½ºÅ×ÀÌÁö¿¡ Á¸ÀçÇÕ´Ï´Ù.\n";
+		std::cout << "ì´ë¯¸ ìŠ¤í…Œì´ì§€ì— ì¡´ì¬í•©ë‹ˆë‹¤.\n";
 		return;
 	}
 
-	// index ÆÄÀÏ ¿­±â(append ¸ğµå)
+	// index íŒŒì¼ ì—´ê¸°(append ëª¨ë“œ)
 	std::ofstream indexFile(".minigit\\index", std::ios::app);
 	if (!indexFile.is_open())
 	{
-		std::cerr << "index ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù.\n";
+		std::cerr << "index íŒŒì¼ì„ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
 	indexFile << filename << ":" << hash << "\n";
 	indexFile.close();
 
-	std::cout << "½ºÅ×ÀÌÂ¡ ¿Ï·á: " << filename << " (" << hash << ")\n";
+	std::cout << "ìŠ¤í…Œì´ì§• ì™„ë£Œ: " << filename << " (" << hash << ")\n";
 }
 

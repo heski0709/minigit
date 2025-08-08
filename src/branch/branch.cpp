@@ -9,9 +9,9 @@
 namespace fs = std::filesystem;
 
 /**
-* @brief ÇöÀç Á¸ÀçÇÏ´Â ºê·£Ä¡ ¸ñ·ÏÀ» Ãâ·ÂÇÑ´Ù.
-* @details	ÆÄÀÏ ½Ã½ºÅÛ¿¡¼­ '.minigit/refs/heads/' ÇÏÀ§ ÆÄÀÏµéÀ» Á¶È¸ÇÏ¿© ºê·£Ä¡¸íÀ» Ãâ·Â.
-*			ÇöÀç ºê·£Ä¡´Â ¾Õ¿¡ '*' Ç¥½Ã¸¦ ºÙÀÓ
+* @brief í˜„ì¬ ì¡´ì¬í•˜ëŠ” ë¸Œëœì¹˜ ëª©ë¡ì„ ì¶œë ¥í•œë‹¤.
+* @details	íŒŒì¼ ì‹œìŠ¤í…œì—ì„œ '.minigit/refs/heads/' í•˜ìœ„ íŒŒì¼ë“¤ì„ ì¡°íšŒí•˜ì—¬ ë¸Œëœì¹˜ëª…ì„ ì¶œë ¥.
+*			í˜„ì¬ ë¸Œëœì¹˜ëŠ” ì•ì— '*' í‘œì‹œë¥¼ ë¶™ì„
 */
 void listBranches()
 {
@@ -20,7 +20,7 @@ void listBranches()
 
 	if (!fs::exists(refDir))
 	{
-		std::cerr << "ºê·£Ä¡ Á¤º¸°¡ ¾ø½À´Ï´Ù.\n";
+		std::cerr << "ë¸Œëœì¹˜ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.\n";
 		return;
 	}
 
@@ -28,7 +28,7 @@ void listBranches()
 	{
 		std::string name = file.path().filename().string();
 
-		// ÇöÀç ºê·£Ä¡ÀÏ °æ¿ì * Ç¥½Ã
+		// í˜„ì¬ ë¸Œëœì¹˜ì¼ ê²½ìš° * í‘œì‹œ
 		if (name == current)
 			std::cout << "* " << name << "\n";
 		else
@@ -37,20 +37,20 @@ void listBranches()
 }
 
 /**
-* @brief ÇöÀç HEAD°¡ °¡¸®Å°´Â Ä¿¹Ô ÇØ½Ã¸¦ ±â¹İÀ¸·Î »õ·Î¿î ºê·£Ä¡ »ı¼º
-* @param newBranchName »õ·Î¿î ºê·£Ä¡ ÀÌ¸§
-* @details	»õ ºê·£Ä¡ ÆÄÀÏÀº '.minigit/refs/heads/<ºê·£Ä¡¸í>'¿¡ »ı¼ºµÇ¸ç,
-*			±× ³»¿ëÀº ÇöÀç HEAD°¡ °¡¸®Å°´Â Ä¿¹Ô ÇØ½ÃÀÌ´Ù.
+* @brief í˜„ì¬ HEADê°€ ê°€ë¦¬í‚¤ëŠ” ì»¤ë°‹ í•´ì‹œë¥¼ ê¸°ë°˜ìœ¼ë¡œ ìƒˆë¡œìš´ ë¸Œëœì¹˜ ìƒì„±
+* @param newBranchName ìƒˆë¡œìš´ ë¸Œëœì¹˜ ì´ë¦„
+* @details	ìƒˆ ë¸Œëœì¹˜ íŒŒì¼ì€ '.minigit/refs/heads/<ë¸Œëœì¹˜ëª…>'ì— ìƒì„±ë˜ë©°,
+*			ê·¸ ë‚´ìš©ì€ í˜„ì¬ HEADê°€ ê°€ë¦¬í‚¤ëŠ” ì»¤ë°‹ í•´ì‹œì´ë‹¤.
 */
 void createBranch(const std::string& newBranchName)
 {
 	std::string currentHash;
 
-	// HEAD¿¡¼­ ÇöÀç ºê·£Ä¡°¡ ÂüÁ¶ÇÏ´Â ref °æ·Î ÀĞ±â
+	// HEADì—ì„œ í˜„ì¬ ë¸Œëœì¹˜ê°€ ì°¸ì¡°í•˜ëŠ” ref ê²½ë¡œ ì½ê¸°
 	std::ifstream head(".minigit\\HEAD");
 	if (!head.is_open())
 	{
-		std::cerr << "HEAD ¿­±â ½ÇÆĞ\n";
+		std::cerr << "HEAD ì—´ê¸° ì‹¤íŒ¨\n";
 		return;
 	}
 
@@ -58,7 +58,7 @@ void createBranch(const std::string& newBranchName)
 	std::getline(head, refPath);
 	head.close();
 
-	// refÆÄÀÏ¿¡¼­ Ä¿¹Ô ÇØ½Ã ÀĞ±â
+	// refíŒŒì¼ì—ì„œ ì»¤ë°‹ í•´ì‹œ ì½ê¸°
 	std::ifstream ref(".minigit\\" + refPath);
 	if (ref.is_open())
 	{
@@ -66,33 +66,33 @@ void createBranch(const std::string& newBranchName)
 		ref.close();
 	}
 
-	// ÀÌ¹Ì Á¸ÀçÇÏ´Â ºê·£Ä¡ÀÏ °æ¿ì ¸®ÅÏ
+	// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë¸Œëœì¹˜ì¼ ê²½ìš° ë¦¬í„´
 	std::string newBranchPath = ".minigit\\refs\\heads\\" + newBranchName;
 	if (fs::exists(newBranchPath))
 	{
-		std::cerr << "ÀÌ¹Ì Á¸ÀçÇÏ´Â ºê·£Ä¡ÀÔ´Ï´Ù.\n";
+		std::cerr << "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë¸Œëœì¹˜ì…ë‹ˆë‹¤.\n";
 		return;
 	}
 
-	// ºê·£Ä¡ ÆÄÀÏ »ı¼º ¹× Ä¿¹Ô ÇØ½Ã ±â·Ï
+	// ë¸Œëœì¹˜ íŒŒì¼ ìƒì„± ë° ì»¤ë°‹ í•´ì‹œ ê¸°ë¡
 	std::ofstream out(newBranchPath);
 	if (!out.is_open())
 	{
-		std::cerr << "ºê·£Ä¡ »ı¼º ½ÇÆĞ\n";
+		std::cerr << "ë¸Œëœì¹˜ ìƒì„± ì‹¤íŒ¨\n";
 		return;
 	}
 
 	out << currentHash;
 	out.close();
 
-	std::cout << "ºê·£Ä¡ »ı¼ºµÊ: " << newBranchName << "\n";
+	std::cout << "ë¸Œëœì¹˜ ìƒì„±ë¨: " << newBranchName << "\n";
 }
 
 /**
-* @brief branch ¸í·É¾î Ã³¸® ÇÔ¼ö
+* @brief branch ëª…ë ¹ì–´ ì²˜ë¦¬ í•¨ìˆ˜
 * 
-* @param argc main ÇÔ¼öÀÇ argc
-* @param argv main ÇÔ¼öÀÇ argv
+* @param argc main í•¨ìˆ˜ì˜ argc
+* @param argv main í•¨ìˆ˜ì˜ argv
 */
 void handleBranchCommand(int argc, char* argv[])
 {
@@ -105,8 +105,8 @@ void handleBranchCommand(int argc, char* argv[])
 	}
 	else
 	{
-		std::cerr << "»ç¿ë¹ı:\n";
-		std::cerr << "minigit branch		¡ç ¸ñ·Ï º¸±â\n";
-		std::cerr << "minigit branch <name>	¡ç ºê·£Ä¡ »ı¼º\n";
+		std::cerr << "ì‚¬ìš©ë²•:\n";
+		std::cerr << "minigit branch		â† ëª©ë¡ ë³´ê¸°\n";
+		std::cerr << "minigit branch <name>	â† ë¸Œëœì¹˜ ìƒì„±\n";
 	}
 }

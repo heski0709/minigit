@@ -3,9 +3,9 @@
 #include <fstream>
 
 /**
- * @brief ÇöÀç HEAD°¡ °¡¸®Å°´Â ºê·£Ä¡¸íÀ» ¹İÈ¯ÇÑ´Ù.
+ * @brief í˜„ì¬ HEADê°€ ê°€ë¦¬í‚¤ëŠ” ë¸Œëœì¹˜ëª…ì„ ë°˜í™˜í•œë‹¤.
  *
- * @return std::string ºê·£Ä¡¸í (¿¹: "main"), ½ÇÆĞ ½Ã ºó ¹®ÀÚ¿­
+ * @return std::string ë¸Œëœì¹˜ëª… (ì˜ˆ: "main"), ì‹¤íŒ¨ ì‹œ ë¹ˆ ë¬¸ìì—´
  */
 std::string getCurrentBranchName()
 {
@@ -27,7 +27,7 @@ std::string getCurrentBranchName()
 
 
 /**
-* @brief ÇöÀç ºê·£Ä¡ÀÇ HEAD¿¡ ÀúÀåµÈ Ä¿¹Ô ÇØ½Ã¸¦ °¡Á®¿À´Â ÇÔ¼ö
+* @brief í˜„ì¬ ë¸Œëœì¹˜ì˜ HEADì— ì €ì¥ëœ ì»¤ë°‹ í•´ì‹œë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 */
 std::string getCurrentBranchHash()
 {
@@ -36,7 +36,7 @@ std::string getCurrentBranchHash()
 }
 
 /**
-* @brief Æ¯Á¤ ºê·£Ä¡ÀÇ HEAD¿¡ ÀúÀåµÈ Ä¿¹Ô ÇØ½Ã¸¦ °¡Á®¿À´Â ÇÔ¼ö
+* @brief íŠ¹ì • ë¸Œëœì¹˜ì˜ HEADì— ì €ì¥ëœ ì»¤ë°‹ í•´ì‹œë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 */
 std::string getBranchHash(const std::string& branchName)
 {

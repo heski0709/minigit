@@ -15,7 +15,7 @@ std::string improvedHash(const std::vector<std::string>& entries)
 		combined ^= (h << 1);
 	}
 
-	// 16Áø¼ö º¯È¯
+	// 16ì§„ìˆ˜ ë³€í™˜
 	std::stringstream ss;
 	ss << std::hex << combined;
 	return ss.str();
@@ -26,10 +26,10 @@ std::string simpleHash(const std::string& content)
 	unsigned int hash = 0;
 	for (auto c : content)
 	{
-		hash = (hash * 31) + static_cast<unsigned char>(c); // 31Àº ¼Ò¼ö (Ãæµ¹¹æÁö ¸ñÀû)
+		hash = (hash * 31) + static_cast<unsigned char>(c); // 31ì€ ì†Œìˆ˜ (ì¶©ëŒë°©ì§€ ëª©ì )
 	}
 
-	// ¼ıÀÚ hash¸¦ 16Áø¼ö ¹®ÀÚ¿­·Î º¯È¯
+	// ìˆ«ì hashë¥¼ 16ì§„ìˆ˜ ë¬¸ìì—´ë¡œ ë³€í™˜
 	char buf[70];
 	sprintf_s(buf, "%08x", hash);
 	return std::string(buf);

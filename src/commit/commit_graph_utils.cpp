@@ -17,7 +17,7 @@ bool isAncestor(const std::string& ancestor, const std::string& descendant)
 		std::string line;
 		while (std::getline(meta, line))
 		{
-			// ¸ŞÅ¸ Á¤º¸¿¡¼­ parent ÇØ½Ã ÃßÃâ
+			// ë©”íƒ€ ì •ë³´ì—ì„œ parent í•´ì‹œ ì¶”ì¶œ
 			if (line.rfind("parent: ", 0) == 0)
 			{
 				current = line.substr(8);
@@ -71,11 +71,11 @@ std::unordered_set<std::string> collectAncestors(const std::string& startHash)
 }
 
 /**
-* @brief µÎ Ä¿¹ÔÀÇ °øÅë Á¶»óÀ» Ã£À½ (°¡Àå °¡±î¿î Á¶»ó, LCA ¼º°İ)
+* @brief ë‘ ì»¤ë°‹ì˜ ê³µí†µ ì¡°ìƒì„ ì°¾ìŒ (ê°€ì¥ ê°€ê¹Œìš´ ì¡°ìƒ, LCA ì„±ê²©)
 *
-* @details hashAÀÇ ¸ğµç Á¶»óÀ» setÀ¸·Î ¼öÁıÇÏ°í,
-*          hashB¸¦ À§·Î Å½»öÇÏ¸é¼­ Ã³À½ ¸¸³ª´Â Á¶»óÀ» ¹İÈ¯.
-*          -> ¼ø¼­ ¾ø´Â set³¢¸® ºñ±³ÇÏÁö ¾Ê°í, °¡Àå °¡±î¿î Á¶»ó ¹İÈ¯ º¸Àå ¸ñÀû.
+* @details hashAì˜ ëª¨ë“  ì¡°ìƒì„ setìœ¼ë¡œ ìˆ˜ì§‘í•˜ê³ ,
+*          hashBë¥¼ ìœ„ë¡œ íƒìƒ‰í•˜ë©´ì„œ ì²˜ìŒ ë§Œë‚˜ëŠ” ì¡°ìƒì„ ë°˜í™˜.
+*          -> ìˆœì„œ ì—†ëŠ” setë¼ë¦¬ ë¹„êµí•˜ì§€ ì•Šê³ , ê°€ì¥ ê°€ê¹Œìš´ ì¡°ìƒ ë°˜í™˜ ë³´ì¥ ëª©ì .
  */
 std::string findCommonAncestor(const std::string& hashA, const std::string& hashB)
 {
@@ -91,7 +91,7 @@ std::string findCommonAncestor(const std::string& hashA, const std::string& hash
 		if (visited.count(current)) continue;
 		visited.insert(current);
 
-		// °¡Àå °¡±î¿î Á¶»ó ¹ß°ß
+		// ê°€ì¥ ê°€ê¹Œìš´ ì¡°ìƒ ë°œê²¬
 		if (ancestorsA.count(current)) return current;
 
 		std::ifstream meta(".minigit\\commits\\" + current + "\\meta.txt");

@@ -5,52 +5,52 @@
 
 bool createDirectory(const std::string& path)
 {
-	// CreateDirectory: ASCII ¹®ÀÚ¿­ °æ·Î¿¡ ´ëÇØ µğ·ºÅä¸® »ı¼º
-	// ÀÌ¹Ì Á¸ÀçÇÏ´Â °æ¿ì ERROR_ALREAY_EXISTS ¹İÈ¯
+	// CreateDirectory: ASCII ë¬¸ìì—´ ê²½ë¡œì— ëŒ€í•´ ë””ë ‰í† ë¦¬ ìƒì„±
+	// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ê²½ìš° ERROR_ALREAY_EXISTS ë°˜í™˜
 	return (CreateDirectoryA(path.c_str(), NULL) || GetLastError() == ERROR_ALREADY_EXISTS);
 }
 
 void init()
 {
-	// .minigit µğ·ºÅä¸® »ı¼º
+	// .minigit ë””ë ‰í† ë¦¬ ìƒì„±
 	if (!createDirectory(".minigit"))
 	{
-		std::cerr << "ÀÌ¹Ì ÃÊ±âÈ­µÈ ÀúÀå¼ÒÀÔ´Ï´Ù.\n";
+		std::cerr << "ì´ë¯¸ ì´ˆê¸°í™”ëœ ì €ì¥ì†Œì…ë‹ˆë‹¤.\n";
 		return;
 	}
 
-	// .minigit ÇÏÀ§ µğ·ºÅä¸® »ı¼º
+	// .minigit í•˜ìœ„ ë””ë ‰í† ë¦¬ ìƒì„±
 	createDirectory(".minigit\\commits");
 	createDirectory(".minigit\\refs");
 	createDirectory(".minigit\\refs\\heads");
 
-	// index ÆÄÀÏ »ı¼º (½ºÅ×ÀÌÂ¡ ¿µ¿ª ±â·Ï)
+	// index íŒŒì¼ ìƒì„± (ìŠ¤í…Œì´ì§• ì˜ì—­ ê¸°ë¡)
 	std::ofstream index(".minigit\\index");
 	if (!index.is_open())
 	{
-		std::cerr << "index ÆÄÀÏ »ı¼º ½ÇÆĞ \n";
+		std::cerr << "index íŒŒì¼ ìƒì„± ì‹¤íŒ¨ \n";
 		return;
 	}
 	index.close();
 
-	// main ºê·£Ä¡ »ı¼º
+	// main ë¸Œëœì¹˜ ìƒì„±
 	std::ofstream mainBranch(".minigit\\refs\\heads\\main");
 	if (!mainBranch.is_open())
 	{
-		std::cerr << "main ºê·£Ä¡ »ı¼º ½ÇÆĞ\n";
+		std::cerr << "main ë¸Œëœì¹˜ ìƒì„± ì‹¤íŒ¨\n";
 		return;
 	}
 
-	// HEAD ÆÄÀÏ »ı¼º (main ºê·£Ä¡¸¦ °¡¸®Å´)
+	// HEAD íŒŒì¼ ìƒì„± (main ë¸Œëœì¹˜ë¥¼ ê°€ë¦¬í‚´)
 	std::ofstream head(".minigit\\HEAD");
 	if (!head.is_open())
 	{
-		std::cerr << "HEAD ÆÄÀÏ »ı¼º ½ÇÆĞ\n";
+		std::cerr << "HEAD íŒŒì¼ ìƒì„± ì‹¤íŒ¨\n";
 		return;
 	}
 
 	head << "refs/heads/main";
 	head.close();
 
-	std::cout << "MiniGit ÃÊ±âÈ­ ¿Ï·á\n";
+	std::cout << "MiniGit ì´ˆê¸°í™” ì™„ë£Œ\n";
 }

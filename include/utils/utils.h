@@ -3,24 +3,24 @@
 #include <vector>
 
 /**
-* @brief ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
-* @param filename °æ·Î¸¦ Æ÷ÇÔÇÑ ÆÄÀÏÀÌ¸§
+* @brief íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+* @param filename ê²½ë¡œë¥¼ í¬í•¨í•œ íŒŒì¼ì´ë¦„
 */
 bool fileExists(const std::string& filename);
 
 /**
-* @brief ÆÄÀÏ ÀüÃ¼ ³»¿ëÀ» ÀĞ±â
-* @param filename °æ·Î¸¦ Æ÷ÇÔÇÑ ÆÄÀÏÀÌ¸§
+* @brief íŒŒì¼ ì „ì²´ ë‚´ìš©ì„ ì½ê¸°
+* @param filename ê²½ë¡œë¥¼ í¬í•¨í•œ íŒŒì¼ì´ë¦„
 */
 std::string readFileContent(const std::string& filename);
 
 /**
-* @brief ÆÄÀÏ ³»¿ëÀ» ÇØ½Ã·Î º¯È¯ÇÏ´Â ÇÔ¼ö
+* @brief íŒŒì¼ ë‚´ìš©ì„ í•´ì‹œë¡œ ë³€í™˜í•˜ëŠ” í•¨ìˆ˜
 */
 std::string improvedHash(const std::vector<std::string>& entries);
 std::string simpleHash(const std::string& content);
 
 /**
-* @brief ¹®ÀÚ¿­À» ÁÙ ´ÜÀ§·Î ºĞ¸®
+* @brief ë¬¸ìì—´ì„ ì¤„ ë‹¨ìœ„ë¡œ ë¶„ë¦¬
 */
 std::vector<std::string> splitLines(const std::string& content);
